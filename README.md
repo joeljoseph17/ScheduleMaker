@@ -16,7 +16,7 @@
 			3. Next
 			4. Under Tomcat installation directory add Tomcat server location
 				* Probably under /usr/local
-			. Finish
+			5. Finish
 
 ## Libraries
 - jgrapht
