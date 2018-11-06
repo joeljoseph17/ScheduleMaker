@@ -3,18 +3,20 @@
 ## How to run
 1. Clone into workspace
 2. Right click on workspace and select import
-	1. under General select Prjects from Folder or Archive
+	1. under General select Projects from Folder or Archive
 		1. Select Directory
 		2. Select ScheduleMaker
 	2. Finish
 3. Right click ScheduleMaker_ScheduleMaker (Folder with M on it)
 	1. Select Run As: Run On Server
-		1. Under Apache, select Tomcat v9.0 Server
-		2. Next
-		3. Under Tomcat installation directory add Tomcat server location
-			* Probably under /usr/local
-	2. Finish
-
+		* Select Finish if there is an existing server
+		* In case it can not run on an existing Server
+			1. Select Manually define a new server
+			2. Under Apache, select Tomcat v9.0 Server
+			3. Next
+			4. Under Tomcat installation directory add Tomcat server location
+				* Probably under /usr/local
+			. Finish
 
 ## Libraries
 - jgrapht
