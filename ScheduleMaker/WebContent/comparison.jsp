@@ -73,6 +73,7 @@
 				<ul>
 					<a href="index.jsp">Home</a>
 					<a href="generator.jsp">Create a Schedule</a>
+					<a href="saved.jsp">Saved Schedules</a>
 				</ul>
 			</nav>
 			
@@ -90,7 +91,7 @@
 					<!-- Second Section -->
 						<section id="saved" class="main special">
 							<header class="major">
-								<h2>Saved Schedules</h2>
+								<h2>Schedules</h2>
 								<div id="schedules">
 									<table id="schedule">
 										<tr>
