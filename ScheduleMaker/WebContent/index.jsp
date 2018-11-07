@@ -112,7 +112,7 @@
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>
-					<a href="comparison.jsp">Schedules</a>
+					<a href="saved.jsp">Saved Schedules</a>
 				</ul>
 			</nav>
 		<!-- Wrapper -->
@@ -183,9 +183,9 @@
 								<div id="members">
 									<ul>
 										<li>Luis Loza</li>
-										<li>Joel Joseph</li>
 										<li>Jillian Khoo</li>
 										<li>Jincheng Zhou</li>
+										<li>Joel Joseph</li>
 										<li>Justin Kim</li>
 									</ul>
 								</div>
