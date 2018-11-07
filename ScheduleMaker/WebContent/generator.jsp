@@ -57,7 +57,7 @@
 		<nav id="top">
 			<ul>
 				<a href="index.jsp">Home</a>
-				<a href="comparison.jsp">Schedules</a>
+				<a href="saved.jsp">Saved Schedules</a>
 			</ul>
 		</nav>
 		
