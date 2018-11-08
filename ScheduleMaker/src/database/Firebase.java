@@ -100,7 +100,7 @@ public class Firebase {
 
 
 				//Define the Collection you want to search
-				CollectionReference myCollection = db.collection("CoursesV3");
+				CollectionReference myCollection = db.collection(COURSES_DB);
 
 
 				//In this case “ID” is the array name which contains the info we want to query
@@ -375,11 +375,11 @@ public class Firebase {
 		for(String day : days) {
 			if(day.equals("mon") || day.equals("monday"))
 				onDay[0] = true;
-			else if(day.equals("tues") || day.equals("tuesday"))
+			else if(day.equals("tue") || day.equals("tuesday"))
 				onDay[1] = true;
 			else if(day.equals("wed") || day.equals("wednesday"))
 				onDay[2] = true;
-			else if(day.equals("thurs") || day.equals("thursday"))
+			else if(day.equals("thu") || day.equals("thursday"))
 				onDay[3] = true;
 			else if(day.equals("fri") || day.equals("friday"))
 				onDay[4] = true;
