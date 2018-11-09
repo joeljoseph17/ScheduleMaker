@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -118,13 +119,15 @@ public class Firebase {
 					String location = docSnap.getString("Location");
 					String section = docSnap.getString("Section Number");
 					String title = docSnap.getString("Course Name");
-					
+					String id = docSnap.getId();
+
 					boolean[] onDay;
 					if(days.equals("TBA") || start.equals("TBA") || end.equals("TBA"))
 						onDay = mapDays("");
 					else
 						onDay = mapDays(days);
-					sessions.add(new Session(title,instructor, sessionType, section, start, end, onDay,location));
+					
+					sessions.add(new Session(id, title,instructor, sessionType, section, start, end, onDay,location));
 				}
 			}
 
@@ -253,8 +256,6 @@ public class Firebase {
 					e.printStackTrace();
 				}
 				if(docSnap!=null && docSnap.exists()) {
-					//					System.out.println(docSnap.get("savedSchedules").toString());
-					//					docSnap.getData().forEach((key, value) -> System.out.println(key + ":" + value.toString()));
 					String days = docSnap.getString("Class Days");
 					String start = docSnap.getString("Class Time Start");
 					String end = docSnap.getString("Class Time End");
@@ -263,9 +264,9 @@ public class Firebase {
 					String location = docSnap.getString("Location");
 					String section = docSnap.getString("Section Number");
 					String title = docSnap.getString("Course Name");
-					
+					String id = docSnap.getId();
 
-					savedSchedules.add(new Session(title,instructor, sessionType, section, start, end, mapDays(days),location));
+					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location));
 				}
 			}
 
@@ -349,8 +350,9 @@ public class Firebase {
 					String location = docSnap.getString("Location");
 					String section = docSnap.getString("Section Number");
 					String title = docSnap.getString("Course Name");
+					String id = docSnap.getId();
 
-					savedSchedules.add(new Session(title,instructor, sessionType, section, start, end, mapDays(days),location));
+					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location));
 				}
 			}
 
@@ -371,15 +373,17 @@ public class Firebase {
 		schedule = schedule.toLowerCase();
 		boolean[] onDay = new boolean[5];
 		String[] days = schedule.split("/");
+		System.out.println(Arrays.toString(days));
+
 		for(String day : days) {
-			System.out.println(day);
+			day=day.trim();
 			if(day.equals("mon") || day.equals("monday"))
 				onDay[0] = true;
 			else if(day.equals("tue") || day.equals("tuesday"))
 				onDay[1] = true;
 			else if(day.equals(" wed") || day.equals("wednesday"))
 				onDay[2] = true;
-			else if(day.equals(" thu") || day.equals("thursday"))
+			else if(day.equals("thu") || day.equals("thursday"))
 				onDay[3] = true;
 			else if(day.equals("fri") || day.equals("friday"))
 				onDay[4] = true;
