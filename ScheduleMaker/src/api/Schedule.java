@@ -132,9 +132,9 @@ public class Schedule implements Iterable<Session>, Cloneable{
 	 * @throws DateTimeParseException
 	 */
 	public void addSession(int sessionGroupId, String instructor, String sessionID, String startTime, String endTime, 
-						   boolean [] onDay, String location) 
+						   boolean [] onDay, String location, boolean isTimeTBA) 
 				throws DateTimeParseException {
-		sessionGroupList.get(sessionGroupId).addSession(sessionID, instructor, startTime, endTime, onDay, location);
+		sessionGroupList.get(sessionGroupId).addSession(sessionID, instructor, startTime, endTime, onDay, location, isTimeTBA);
 	}
 	
 	/**
@@ -148,9 +148,9 @@ public class Schedule implements Iterable<Session>, Cloneable{
 	 * @throws DateTimeParseException
 	 */
 	public void addSession(int sessionGroupId, String instructor, String sessionID, Instant startTime, Instant endTime, 
-						   boolean [] onDay, String location) 
+						   boolean [] onDay, String location, boolean isTimeTBA) 
 				throws DateTimeParseException {
-		sessionGroupList.get(sessionGroupId).addSession(sessionID, instructor, startTime, endTime, onDay, location);
+		sessionGroupList.get(sessionGroupId).addSession(sessionID, instructor, startTime, endTime, onDay, location, isTimeTBA);
 	}
 	
 	/**
@@ -235,7 +235,7 @@ public class Schedule implements Iterable<Session>, Cloneable{
 			//  create a new session group with same signature but containing only this session 
 			candidate.createSessionGroup(sessionGroup.getCourseId(), sessionGroup.getCourseName(), sessionGroup.getSessionType());
 			candidate.addSession(index, session.getSessionID(), session.getSessionInstructor(), session.getStartTime(), 
-								 session.getEndTime(), session.getOnDay(), session.getLocation());
+								 session.getEndTime(), session.getOnDay(), session.getLocation(), session.isTimeTBA());
 			// Obtain the neighbor set of this session and generate the neighbor set for next recursive step
 			Set<Session> sessionNeighborSet = Graphs.neighborSetOf(graph, session);
 			
@@ -307,24 +307,24 @@ class SessionGroup{
 		}
 	}
 	
-	public void addSession(String sessionID, String instructor, String startTime, String endTime, boolean [] onDay, String location) 
+	public void addSession(String sessionID, String instructor, String startTime, String endTime, boolean [] onDay, String location, boolean isTimeTBA) 
 		throws DateTimeParseException{
 		// startTime and endTime format: hh:mm
 		if ((sessionID == null) || (startTime == null) || (endTime == null) || (onDay == null) 
 				|| (onDay.length < 5)|| (location == null)) {
 			throw new IllegalArgumentException("Arguments to method SessionGroup.createSession() is/are invalid");
 		}
-		this.addSession(new Session(courseId, courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location));
+		this.addSession(new Session(courseId, courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location, isTimeTBA));
 	}
 	
-	public void addSession(String sessionID, String instructor, Instant startTime, Instant endTime, boolean [] onDay, String location) 
+	public void addSession(String sessionID, String instructor, Instant startTime, Instant endTime, boolean [] onDay, String location, boolean isTimeTBA) 
 			throws DateTimeParseException{
 			// startTime and endTime format: hh:mm
 		if ((sessionID == null) || (startTime == null) || (endTime == null) || (onDay == null) 
 				|| (onDay.length < 5)|| (location == null)) {
 			throw new IllegalArgumentException("Arguments to method SessionGroup.createSession() is/are invalid");
 		}
-		this.addSession(new Session(courseId, courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location));
+		this.addSession(new Session(courseId, courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location, isTimeTBA));
 	}
 	
 	public String getCourseId() {

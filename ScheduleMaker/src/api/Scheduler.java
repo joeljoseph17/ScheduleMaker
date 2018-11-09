@@ -26,7 +26,7 @@ public class Scheduler {
 				id = schedule.createSessionGroup(s.getSessionCourseId(), s.getSessionCourseName(), s.getSessionType());
 
 			} 
-			schedule.addSession(id, s.getSessionID(), s.getSessionInstructor(), s.getStartTime(), s.getEndTime(), s.getOnDay(), s.getLocation());
+			schedule.addSession(id, s.getSessionID(), s.getSessionInstructor(), s.getStartTime(), s.getEndTime(), s.getOnDay(), s.getLocation(), s.isTimeTBA());
 		}
 		
 
