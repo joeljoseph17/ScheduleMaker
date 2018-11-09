@@ -36,7 +36,8 @@ import models.Session;
 
 public class Firebase {
 	private final static String USERS_DB = "Users";
-	private final static String COURSES_DB = "CoursesV3";
+	private final static String COURSES_DB = "CoursesV4";
+	
 	public static void register(String email,User user) {
 		Firestore db = null;
 
@@ -178,11 +179,10 @@ public class Firebase {
 		//check what happens if we give a bad email
 
 		Gson gson = new Gson();
-		List<String> scheduleIds = new LinkedList<>();
 
 
 		// asynchronously retrieve the document
-		ApiFuture<WriteResult> arrayUnion = docRef.update("savedSchedules", FieldValue.arrayUnion(gson.toJson(scheduleIds)));
+		ApiFuture<WriteResult> arrayUnion = docRef.update("savedSchedules", FieldValue.arrayUnion(gson.toJson(schedule)));
 
 
 		try {
