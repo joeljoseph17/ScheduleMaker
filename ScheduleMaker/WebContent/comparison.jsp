@@ -35,6 +35,30 @@
 				var scheduleId = clickedThing.id.substring(8);
 				var thisSchedule = document.getElementById("hidden"+scheduleId).innerHTML;
 				console.log(thisSchedule);
+				var jsonSchedule = JSON.parse(thisSchedule);
+				var courses=[]
+				for(var i=0; i<jsonSchedule.length; i++){
+					var myClass = JSON.stringify(jsonSchedule[i]);
+					myClass = myClass.substr(16);
+					var endPosition = myClass.indexOf("\'");
+					console.log(myClass);
+					myClass = myClass.substr(0, endPosition);
+					courses.push(myClass);
+				}
+				var body={
+						"email": email,
+						"schedule": courses
+				};
+				if(window.confirm("Save this Schedule?")){
+					var xhttp = new XMLHttpRequest();
+				  	xhttp.onreadystatechange = function(){
+				  		console.log("Saved!");
+				  		var response = xhttp.responseText;
+				  		console.log(response);
+				  	};
+				  	xhttp.open("POST", "save", true);
+				  	xhttp.send(JSON.stringify(body));
+				}
 			}
 		</script>
 		<style>
@@ -185,7 +209,7 @@ System.out.println(body);
 												String location = gson.fromJson(courseChoice.get("location"), String.class);
 												String instructor = gson.fromJson(courseChoice.get("instructor"), String.class);
 												if(instructor.equals("No Information")){
-													instructor = "TBD";
+													instructor = "TBA";
 												}
 										%>
 										<tr>

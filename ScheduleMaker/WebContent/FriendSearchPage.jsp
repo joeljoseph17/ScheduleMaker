@@ -98,6 +98,7 @@
 					</header>
 
 					<div id="main">
+						<table>
 					<%
 						String param = request.getAttribute("users").toString();
 						Gson gson = new Gson();
@@ -113,9 +114,13 @@
 							String name = gson.fromJson(userChoice.get("name"), String.class);
 							String email = gson.fromJson(userChoice.get("email"), String.class);
 					%>
+						<tr>
+							<td></td>
+						</tr>
 					<%
 						}
 					%>
+						</table>
 
 					</div>
 
