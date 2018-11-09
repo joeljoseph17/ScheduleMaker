@@ -23,7 +23,7 @@ public class Scheduler {
 		for(Session s : sessions) {
 			int id= schedule.getSessionGroupID(s.getSessionCourseName(), s.getSessionType());
 			if(id==-1) {
-				id = schedule.createSessionGroup(s.getSessionCourseName(), s.getSessionType());
+				id = schedule.createSessionGroup(s.getSessionCourseId(), s.getSessionCourseName(), s.getSessionType());
 
 			} 
 			schedule.addSession(id, s.getSessionID(), s.getSessionInstructor(), s.getStartTime(), s.getEndTime(), s.getOnDay(), s.getLocation());
