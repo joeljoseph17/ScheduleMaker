@@ -381,7 +381,7 @@ public class Firebase {
 				onDay[0] = true;
 			else if(day.equals("tue") || day.equals("tuesday"))
 				onDay[1] = true;
-			else if(day.equals("wed") || day.equals("wednesday"))
+			else if(day.equals(" wed") || day.equals("wednesday"))
 				onDay[2] = true;
 			else if(day.equals("thu") || day.equals("thursday"))
 				onDay[3] = true;

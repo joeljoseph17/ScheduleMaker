@@ -6,6 +6,8 @@
 		<title>Home</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+				<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
+		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
 
@@ -66,6 +68,31 @@
 				justify-content: center;
 			}
 		</style>
+		<script>
+		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
+		var API_KEY = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3";
+		var email;
+			function onLoad(){
+			      gapi.load('auth2:client', function(){
+			          gapi.auth2.init({
+			        	  client_id: CLIENT_ID
+			          }).then(function(){
+			              var auth2 = gapi.auth2.getAuthInstance(); 
+			           	  var googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+			        	  var profile = googleUser.getBasicProfile();
+			        	  email = profile.getEmail();
+			        	  console.log(email);
+						  var xhttp = new XMLHttpRequest();
+						  xhttp.onreadystatechange = function(){
+						  	console.log("got schedules");
+							console.log(xhttp.responseText);
+						  };
+						  xhttp.open("GET", "saved-schedules?email="+email, true);
+						  xhttp.send();
+			          });
+				  });
+			}
+		</script>
 	</head>
 	<body class="is-preload">
 		
