@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 public class Session {
 	private static final String UTCstring = "2018-10-13T%s:00.00Z"; // Default standard UTC time string to translate to time
 	
+	private String courseId;
 	private String courseName;
 	private String instructor;
 	private String sessionType;
@@ -35,18 +36,19 @@ public class Session {
 	
 	// Constructor
 	// startTime and endTime format: hh:mm
-	public Session(String courseName, String instructor, String sessionType, String sessionID, String startTime, 
+	public Session(String courseId, String courseName, String instructor, String sessionType, String sessionID, String startTime, 
 			       String endTime, boolean [] onDay, String location) 
 		throws DateTimeParseException{
-		this(courseName, instructor, sessionType, sessionID, 
+		this(courseId, courseName, instructor, sessionType, sessionID, 
 				Instant.parse(String.format(UTCstring, startTime)), Instant.parse(String.format(UTCstring, endTime)),
 				onDay, location);
 	}
 	
 	// Constructor
 	// startTime and endTime format: hh:mm
-	public Session(String courseName, String instructor, String sessionType, String sessionID, Instant startTime, 
+	public Session(String courseId, String courseName, String instructor, String sessionType, String sessionID, Instant startTime, 
 				   Instant endTime, boolean [] onDay, String location) {
+		this.courseId = courseId;
 		this.courseName = courseName;
 		this.instructor = instructor;
 		this.sessionType = sessionType;
@@ -61,6 +63,7 @@ public class Session {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a").withZone(ZoneId.of("Z"));
 		String json = "";
 		json += "{";
+		json += "'courseId' : '" + this.courseId + "', ";
 		json += "'courseName' : '" + this.courseName + "', ";
 		json += "'instructor' : '" + this.instructor + "', ";
 		json += "'sessionType' : '" + this.sessionType + "', ";
@@ -75,6 +78,10 @@ public class Session {
 		json += "}";
 		System.out.println(json);
 		return json;
+	}
+	
+	public String getSessionCourseId() {
+		return courseId;
 	}
 	
 	public String getSessionCourseName() {

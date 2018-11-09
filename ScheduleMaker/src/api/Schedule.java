@@ -67,8 +67,8 @@ public class Schedule implements Iterable<Session>, Cloneable{
 	 * @param sessionType Session type
 	 * @return the index of the SessionGroup just created
 	 */
-	public int createSessionGroup(String courseName, String sessionType) {
-		return this.createSessionGroup(new SessionGroup(courseName, sessionType));
+	public int createSessionGroup(String courseId, String courseName, String sessionType) {
+		return this.createSessionGroup(new SessionGroup(courseId, courseName, sessionType));
 	}
 	
 	/**
@@ -233,7 +233,7 @@ public class Schedule implements Iterable<Session>, Cloneable{
 			}
 			// If not in conflict, add to candidate
 			//  create a new session group with same signature but containing only this session 
-			candidate.createSessionGroup(sessionGroup.getCourseName(), sessionGroup.getSessionType());
+			candidate.createSessionGroup(sessionGroup.getCourseId(), sessionGroup.getCourseName(), sessionGroup.getSessionType());
 			candidate.addSession(index, session.getSessionID(), session.getSessionInstructor(), session.getStartTime(), 
 								 session.getEndTime(), session.getOnDay(), session.getLocation());
 			// Obtain the neighbor set of this session and generate the neighbor set for next recursive step
@@ -290,11 +290,13 @@ public class Schedule implements Iterable<Session>, Cloneable{
 
 class SessionGroup{
 	private ArrayList<Session> sessionList;
+	private String courseId;
 	private String courseName;
 	private String sessionType;
 	
-	public SessionGroup(String courseName, String sessionType) {
+	public SessionGroup(String courseId, String courseName, String sessionType) {
 		sessionList = new ArrayList<Session>();
+		this.courseId = courseId;
 		this.courseName = courseName;
 		this.sessionType = sessionType;
 	}
@@ -312,7 +314,7 @@ class SessionGroup{
 				|| (onDay.length < 5)|| (location == null)) {
 			throw new IllegalArgumentException("Arguments to method SessionGroup.createSession() is/are invalid");
 		}
-		this.addSession(new Session(courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location));
+		this.addSession(new Session(courseId, courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location));
 	}
 	
 	public void addSession(String sessionID, String instructor, Instant startTime, Instant endTime, boolean [] onDay, String location) 
@@ -322,7 +324,11 @@ class SessionGroup{
 				|| (onDay.length < 5)|| (location == null)) {
 			throw new IllegalArgumentException("Arguments to method SessionGroup.createSession() is/are invalid");
 		}
-		this.addSession(new Session(courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location));
+		this.addSession(new Session(courseId, courseName, instructor, sessionType, sessionID, startTime, endTime, onDay, location));
+	}
+	
+	public String getCourseId() {
+		return courseId;
 	}
 	
 	public String getCourseName() {
