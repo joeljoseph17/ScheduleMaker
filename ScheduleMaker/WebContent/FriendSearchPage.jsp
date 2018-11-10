@@ -76,6 +76,18 @@
 			          });
 				  });
 			}
+			function doFunction(){
+				
+				//Pack Request 
+				var nameValue = document.getElementById("uniqueID").value;
+				console.log("this is " + nameValue);
+				sessionStorage.setItem("SearchTerms",nameValue);
+				
+				//Send out to be triaged at search
+				window.location.href = "FriendSearchPage.jsp";
+				
+			  	
+			}
 			
 		</script>
 		
@@ -126,6 +138,12 @@
 				<a href="generator.jsp">Create a Schedule</a>
 				<a id="seeSaved" href="">Saved Schedules</a>
 			</ul>
+			<div id="searchbar">
+				<form id="searchForm">
+	      			<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 	<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    		</form>
+	    	</div>
 		</nav>
 		
 		<!-- Wrapper -->

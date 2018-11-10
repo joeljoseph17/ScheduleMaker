@@ -89,6 +89,18 @@
 				email = sessionStorage.getItem("email");
 				console.log("that email was from getEmail");
 			}
+			function doFunction(){
+				
+				//Pack Request 
+				var nameValue = document.getElementById("uniqueID").value;
+				console.log("this is " + nameValue);
+				sessionStorage.setItem("SearchTerms",nameValue);
+				
+				//Send out to be triaged at search
+				window.location.href = "FriendSearchPage.jsp";
+				
+			  	
+			}
 		</script>
 		<script type="text/javascript" src="websocket.js"></script>
 	</head>
@@ -118,6 +130,12 @@ System.out.println(body);
 					<a href="index.jsp">Home</a>
 					<a href="generator.jsp">Create a Schedule</a>
 				</ul>
+				<div id="searchbar">
+					<form id="searchForm">
+	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    			</form>
+	    		</div>
 			</nav>
 			
 		<!-- Wrapper -->
