@@ -10,7 +10,7 @@
 		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
 		<style>
 			.schedule {
 			    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -144,7 +144,7 @@
 			}
 		</script>	
 	</head>
-	<body class="is-preload" onload="getEmail()">
+	<body class="is-preload" onload="getEmail(); connectToServer()">
 		<%@ page import="com.google.gson.Gson" %>
 	<%@ page import="java.io.StringReader" %>
 	<%@ page import="com.google.gson.JsonObject" %>
