@@ -78,7 +78,43 @@
 			}
 
 		</script>
-		<script type="text/javascript" src="websocket.js"></script>
+		
+		<script type="text/javascript">
+    	document.addEventListener("DOMContentLoaded", function () {
+    		//console.log("H");
+    		var searchTerm = sessionStorage.getItem("SearchTerms")
+    		console.log("search Term Recieved by Triage @" + searchTerm);
+    		
+    		
+    		var requeststr = "search?";
+    		
+    		var email = sessionStorage.getItem("email");
+    		//var URL = sessionStorage.getItem("URL");	
+    		
+    		requeststr += "email=" + email;
+          	requeststr += "&query=" + searchTerm; 
+    		
+    		
+		    var xhttp = new XMLHttpRequest();
+	      	xhttp.open("GET", requeststr, true);
+	      	xhttp.send();
+	   
+	      	
+	      	console.log("Orders sent: ");
+	      	console.log(requeststr);
+	      	
+	      	console.log("Outbound");
+	      	
+	      	
+	      	//var temp = document.getElementById("hello").innerHTML;
+	      	
+	      	
+    	})
+    	
+    	
+    	
+    </script>
+    
 	</head>
 	<body class="is-preload" onload="connectToServer()">
 		
@@ -97,9 +133,9 @@
 					<header id="header" class = "alt">
 						<h1>Find Friends</h1>
 					</header>
-
-					<div id="main">
+						<table>
 					<%
+					/*
 						String param = request.getAttribute("users").toString();
 						Gson gson = new Gson();
 						JsonReader jr = new JsonReader(new StringReader(param)); 
@@ -113,10 +149,17 @@
 							JsonObject userChoice = gson.fromJson(reader, JsonObject.class);
 							String name = gson.fromJson(userChoice.get("name"), String.class);
 							String email = gson.fromJson(userChoice.get("email"), String.class);
+							*/
 					%>
+						<tr>
+							<td></td>
+						</tr>
 					<%
+					/*
 						}
+						*/
 					%>
+						</table>
 
 					</div>
 

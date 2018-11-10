@@ -29,6 +29,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.cloud.firestore.Query;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import api.Schedule;
 import models.User;
@@ -36,63 +37,37 @@ import models.Session;
 
 public class Firebase {
 	private final static String USERS_DB = "Users";
-	private final static String COURSES_DB = "CoursesV3";
+	private final static String COURSES_DB = "CoursesV4";
+	
 	public static void register(String email,User user) {
-		Firestore db = null;
+		Firestore db = initFirestore();
+		
+		DocumentReference docRef = db.collection(USERS_DB).document(email);
+		//check what happens if we give a bad email
 
+		// asynchronously retrieve the document
+		ApiFuture<DocumentSnapshot> future = docRef.get();
+		// ...
+		// future.get() blocks on response
+		DocumentSnapshot docSnap = null;
 		try {
-			InputStream serviceAccount = new FileInputStream("cs201-final-project-firebase-adminsdk-mobr9-2f3704063b.json");
-			GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-			FirebaseOptions options = new FirebaseOptions.Builder()
-					.setCredentials(credentials)
-					.build();
-			FirebaseApp.initializeApp(options);
-
-			db = FirestoreClient.getFirestore();
+			docSnap = future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch(FileNotFoundException e) {
-			System.out.println("LOL something went wrong");
-			System.out.println(e.getMessage());
+		
+		if(!docSnap.exists()) {
+			db.collection(USERS_DB).document(email).set(user);	
 		}
-		catch(IOException e) {
-			System.out.println("LOL something went wrong");
-			System.out.println(e.getMessage());
+		else  {
+			System.out.println("User Already Exists");
 		}
-		System.out.println("Connected to firebase");
-
-		db.collection(USERS_DB).document(email).set(user);	
 	}
 
 	public static List<Session> getCourses(List<String> courses) {
 
-		Firestore db = null;
-		List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
-
-		if(firebaseApps!=null && !firebaseApps.isEmpty()){
-			for(FirebaseApp app : firebaseApps){
-				if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME))
-					db = FirestoreClient.getFirestore();
-			}
-		}
-		else {
-			try {
-				InputStream serviceAccount = new FileInputStream("cs201-final-project-firebase-adminsdk-mobr9-2f3704063b.json");
-				GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-				FirebaseOptions options = new FirebaseOptions.Builder()
-						.setCredentials(credentials)
-						.build();
-				FirebaseApp.initializeApp(options);
-
-				db = FirestoreClient.getFirestore();
-			}
-			catch(FileNotFoundException e) {
-				System.out.println(e.getMessage());
-			}
-			catch(IOException e) {
-				System.out.println(e.getMessage());
-			}
-			System.out.println("Connected to firebase");
-		}
+		Firestore db = initFirestore();
 		List<Session> sessions = new LinkedList<>();
 
 		//Define the query, feel free to pass a string in through an argument
@@ -144,48 +119,65 @@ public class Firebase {
 
 		return sessions;
 	}
+	
+	public static List<JsonObject> searchUsers(String currentUserEmail, String query) {
+		Firestore db = initFirestore();
+		List<JsonObject> users = new LinkedList<>();
+		
+		//Define the Collection you want to search
+		CollectionReference usersCollection = db.collection(USERS_DB);
+		Query myQuery = usersCollection.whereArrayContains("name", query);
+
+		ApiFuture<QuerySnapshot> querySnapshot = myQuery.get();
+		
+		try {
+			System.out.println(querySnapshot.get().toString());
+		} catch (InterruptedException | ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//Cycle through all the documents that come back
+		try {
+			for (DocumentSnapshot docSnap : querySnapshot.get().getDocuments()) {		
+				System.out.println("loop");
+
+				JsonObject user = new JsonObject();
+				String email = docSnap.getId();
+				String name = query;
+				
+				if(currentUserEmail.equals(email)) { //don't add current user to list of returned user
+					continue;
+				}
+				
+				user.addProperty("name", name);
+				user.addProperty("email", email);
+				
+				System.out.println(user.toString());
+				
+				users.add(user);
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return users;
+	}
 
 	public static void saveSchedule(String email, List<String> schedule) {
-		Firestore db = null;
-		List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
-
-		if(firebaseApps!=null && !firebaseApps.isEmpty()){
-			for(FirebaseApp app : firebaseApps){
-				if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME))
-					db = FirestoreClient.getFirestore();
-			}
-		}
-		else {
-			try {
-				InputStream serviceAccount = new FileInputStream("cs201-final-project-firebase-adminsdk-mobr9-2f3704063b.json");
-				GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-				FirebaseOptions options = new FirebaseOptions.Builder()
-						.setCredentials(credentials)
-						.build();
-				FirebaseApp.initializeApp(options);
-
-				db = FirestoreClient.getFirestore();
-			}
-			catch(FileNotFoundException e) {
-				System.out.println("LOL something went wrong");
-				System.out.println(e.getMessage());
-			}
-			catch(IOException e) {
-				System.out.println("LOL something went wrong");
-				System.out.println(e.getMessage());
-			}
-			System.out.println("Connected to firebase");
-		}
-
+		Firestore db = initFirestore();
+		
 		DocumentReference docRef = db.collection(USERS_DB).document(email);
 		//check what happens if we give a bad email
 
 		Gson gson = new Gson();
-		List<String> scheduleIds = new LinkedList<>();
 
-
+		System.out.println(schedule);
 		// asynchronously retrieve the document
-		ApiFuture<WriteResult> arrayUnion = docRef.update("savedSchedules", FieldValue.arrayUnion(gson.toJson(scheduleIds)));
+		ApiFuture<WriteResult> arrayUnion = docRef.update("savedSchedules", FieldValue.arrayUnion(gson.toJson(schedule)));
 
 
 		try {
@@ -198,36 +190,7 @@ public class Firebase {
 	}
 	public static List<Session> getSavedSchedules(String email) {
 
-		Firestore db = null;
-		List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
-
-		if(firebaseApps!=null && !firebaseApps.isEmpty()){
-			for(FirebaseApp app : firebaseApps){
-				if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME))
-					db = FirestoreClient.getFirestore();
-			}
-		}
-		else {
-			try {
-				InputStream serviceAccount = new FileInputStream("cs201-final-project-firebase-adminsdk-mobr9-2f3704063b.json");
-				GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-				FirebaseOptions options = new FirebaseOptions.Builder()
-						.setCredentials(credentials)
-						.build();
-				FirebaseApp.initializeApp(options);
-
-				db = FirestoreClient.getFirestore();
-			}
-			catch(FileNotFoundException e) {
-				System.out.println("LOL something went wrong");
-				System.out.println(e.getMessage());
-			}
-			catch(IOException e) {
-				System.out.println("LOL something went wrong");
-				System.out.println(e.getMessage());
-			}
-			System.out.println("Connected to firebase");
-		}
+		Firestore db = initFirestore();
 		DocumentReference docRef = db.collection(USERS_DB).document(email);
 		//check what happens if we give a bad email
 
@@ -249,9 +212,9 @@ public class Firebase {
 		if(docSnap!=null && docSnap.exists()) {
 			user = docSnap.toObject(User.class);
 			for(String courseTitle : user.getSavedSchedules()) {
-				System.out.println(courseTitle);
 				docRef = db.collection(COURSES_DB).document(courseTitle);
 				future = docRef.get();
+				
 				try {
 					docSnap = future.get();
 				} catch (InterruptedException | ExecutionException e) {
@@ -279,42 +242,13 @@ public class Firebase {
 		} else  {
 			//user not found
 		}
-
+		System.out.println(savedSchedules);
 		return savedSchedules;
 	}
 
 	public static List<String> getFriends(String email) {
 
-		Firestore db = null;
-		List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
-
-		if(firebaseApps!=null && !firebaseApps.isEmpty()){
-			for(FirebaseApp app : firebaseApps){
-				if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME))
-					db = FirestoreClient.getFirestore();
-			}
-		}
-		else {
-			try {
-				InputStream serviceAccount = new FileInputStream("cs201-final-project-firebase-adminsdk-mobr9-2f3704063b.json");
-				GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-				FirebaseOptions options = new FirebaseOptions.Builder()
-						.setCredentials(credentials)
-						.build();
-				FirebaseApp.initializeApp(options);
-
-				db = FirestoreClient.getFirestore();
-			}
-			catch(FileNotFoundException e) {
-				System.out.println("LOL something went wrong");
-				System.out.println(e.getMessage());
-			}
-			catch(IOException e) {
-				System.out.println("LOL something went wrong");
-				System.out.println(e.getMessage());
-			}
-			System.out.println("Connected to firebase");
-		}
+		Firestore db = initFirestore();
 		DocumentReference docRef = db.collection(USERS_DB).document(email);
 		//check what happens if we give a bad email
 
@@ -372,6 +306,40 @@ public class Firebase {
 		return null;
 	}
 
+	private static Firestore initFirestore() {
+		Firestore db = null;
+		List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
+
+		if(firebaseApps!=null && !firebaseApps.isEmpty()){
+			for(FirebaseApp app : firebaseApps){
+				if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME))
+					db = FirestoreClient.getFirestore();
+			}
+		}
+		else {
+			try {
+				InputStream serviceAccount = new FileInputStream("cs201-final-project-firebase-adminsdk-mobr9-2f3704063b.json");
+				GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
+				FirebaseOptions options = new FirebaseOptions.Builder()
+						.setCredentials(credentials)
+						.build();
+				FirebaseApp.initializeApp(options);
+
+				db = FirestoreClient.getFirestore();
+			}
+			catch(FileNotFoundException e) {
+				System.out.println("LOL something went wrong");
+				System.out.println(e.getMessage());
+			}
+			catch(IOException e) {
+				System.out.println("LOL something went wrong");
+				System.out.println(e.getMessage());
+			}
+			System.out.println("Connected to firebase");
+		}
+		
+		return db;
+	}
 	/**
 	 * Maps days to a boolean array of size 7
 	 * 
@@ -390,7 +358,7 @@ public class Firebase {
 				onDay[0] = true;
 			else if(day.equals("tue") || day.equals("tuesday"))
 				onDay[1] = true;
-			else if(day.equals(" wed") || day.equals("wednesday"))
+			else if(day.equals("wed") || day.equals("wednesday"))
 				onDay[2] = true;
 			else if(day.equals("thu") || day.equals("thursday"))
 				onDay[3] = true;
@@ -400,4 +368,6 @@ public class Firebase {
 
 		return onDay;
 	}
+	
 }
+

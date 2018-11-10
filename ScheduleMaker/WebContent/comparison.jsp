@@ -6,14 +6,14 @@
 		<title>Home</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-				<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
+		<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
 		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
 		<script>
 		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
 		var API_KEY = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3";
-		var email;
+		var email="";
 			function onLoad(){
 			      gapi.load('auth2:client', function(){
 			          gapi.auth2.init({
@@ -35,6 +35,37 @@
 				var scheduleId = clickedThing.id.substring(8);
 				var thisSchedule = document.getElementById("hidden"+scheduleId).innerHTML;
 				console.log(thisSchedule);
+				var jsonSchedule = JSON.parse(thisSchedule);
+				var courses=[]
+				for(var i=0; i<jsonSchedule.length; i++){
+					var myClass = JSON.stringify(jsonSchedule[i]);
+					myClass = myClass.substr(16);
+					var endPosition = myClass.indexOf("\'");
+					console.log(myClass);
+					myClass = myClass.substr(0, endPosition);
+					courses.push(myClass);
+				}
+				if(email.length==0){
+					email=document.getElementById("hiddenEmail").innerHTML;
+				}
+				if(email.length>0){
+					var body={
+							"email": email,
+							"schedule": courses
+					};
+					if(window.confirm("Save this Schedule?")){
+						var xhttp = new XMLHttpRequest();
+				  		xhttp.onreadystatechange = function(){
+				  			console.log("Saved!");
+				  			var response = xhttp.responseText;
+				  			console.log(response);
+				  		};
+				  		xhttp.open("POST", "save", true);
+				  		xhttp.send(JSON.stringify(body));
+					}
+				}else{
+					window.alert("only logged in users can save schedules!");
+				}
 			}
 		</script>
 		<script type="text/javascript" src="websocket.js"></script>
@@ -51,9 +82,6 @@
 			    padding: 8px;
 			}
 			
-			.schedule tr:nth-child(even){background-color: #f2f2f2;}
-			
-			.schedule tr:hover {background-color: #ddd;}
 			
 			
 			.schedule th {
@@ -105,6 +133,13 @@
 	<%@ page import="com.google.gson.stream.JsonReader" %>
 				<%
 String param = request.getAttribute("schedules").toString();
+String userEmail = request.getAttribute("user").toString();
+System.out.println(userEmail);
+if(userEmail.contains("%40")){
+	String[] fixedEmail = userEmail.split("%40");
+	userEmail=fixedEmail[0]+"@"+fixedEmail[1];
+	System.out.println(userEmail);
+}
 //System.out.println(param);
 System.out.println("made it to the jsp comparison page");
 Gson gson = new Gson();
@@ -114,7 +149,7 @@ JsonArray body = gson.fromJson(jr, JsonArray.class);
 System.out.println(body);
 
 %>
-		
+		<p style="display:none" id="hiddenEmail"><%= userEmail %></p>
 			<nav id="top">
 				<ul>
 					<a href="index.jsp">Home</a>
@@ -184,9 +219,12 @@ System.out.println(body);
 												
 												String time = gson.fromJson(courseChoice.get("startTime"), String.class)+" - "+gson.fromJson(courseChoice.get("endTime"), String.class);
 												String location = gson.fromJson(courseChoice.get("location"), String.class);
+												if(location.length()<2){
+													location="TBA";
+												}
 												String instructor = gson.fromJson(courseChoice.get("instructor"), String.class);
 												if(instructor.equals("No Information")){
-													instructor = "TBD";
+													instructor = "TBA";
 												}
 										%>
 										<tr>
