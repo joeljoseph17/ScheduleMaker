@@ -128,9 +128,26 @@
 		        socket.send("email:"+email);
 		        console.log("Session Opened!")
 		    }
+		    
+	
+		    
+		    if (Notification.permission === "granted"){
+		        var notification = new Notification('Notification title', {
+		          icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+		          body: "Hey there! You've been notified!",
+		        });
 
+		        notification.onclick = function () {
+		          window.open("http://stackoverflow.com/a/13328397/1269037");      
+		        };
+
+		      }
+		    
 		    socket.onmessage = function(event) {
 		        // Process the message received
+		    	var notification = new Notification('Someone created a new Schedule!', {
+		  	      body: "Hey " + event.data + " just saved a new schedule. Search them up to see the schedule in more detail.",
+		  	    });
 		    }
 
 		    socket.onclose = function(event) {

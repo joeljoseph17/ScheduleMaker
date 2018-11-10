@@ -42,7 +42,44 @@
 	<body class="is-preload">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
+
+function connectToServer() {
+	console.log("Entering Web Socket Connection");
+    socket = new WebSocket("ws://localhost:8080/ScheduleMaker/broadcast");
+    console.log("Got out of init");
+    console.log("Registering session client email: " + email);
+    socket.onopen = function(event) {
+        // When the connection open, send a message to server identifying the email of current client 
+        socket.send("email:"+email);
+        console.log("Session Opened!")
+    }
+    
+    socket.onmessage = function(event) {
+        // Process the message received
+    	var notification = new Notification('Someone created a new Schedule!', {
+  	      body: "Hey " + event.data + " just saved a new schedule. Search them up to see the schedule in more detail.",
+  	    });
+    }
+
+    socket.onclose = function(event) {
+
+    }
+
+    socket.onerror = function(event) {
+
+    }
+}
+
 function onSignIn(googleUser) {
+	console.log("GETTING PERMISSS");
+	Notification.requestPermission(function (permission) {
+		  // If the user accepts, let's create a notification
+		    if (permission === "granted") {
+		      console.log("Permission to receive notifications has been granted");
+		    }
+		  });
+
+	
 	  var profile = googleUser.getBasicProfile();
 	  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
 	  console.log('Name: ' + profile.getName());
@@ -72,6 +109,8 @@ function onSignIn(googleUser) {
 	  	sessionStorage.setItem("email",email);
 	  	document.getElementById("myuser").value=email;
   	  	console.log(document.getElementById("myuser").value);
+  	  	
+  	  	
 	}
 	
 	
