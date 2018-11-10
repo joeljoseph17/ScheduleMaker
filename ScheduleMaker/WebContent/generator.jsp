@@ -110,6 +110,7 @@
 				console.log("getEmail");
 				console.log(sessionStorage.getItem("email"));
 				email = sessionStorage.getItem("email");
+				document.getElementById("seeSaved").href="saved-schedules?email="+email;
 				console.log("that email was from getEmail");
 			}
 		</script>
@@ -119,6 +120,12 @@
 
 		var socket;
 		function connectToServer() {
+			// If current session does not have email, then user not logged in. 
+			// Do not create Websocket connection to server
+			if (email == null || email == "") {
+				return;
+			}
+			
 			console.log("Entering Web Socket Connection");
 		    socket = new WebSocket("ws://localhost:8080/ScheduleMaker/broadcast");
 		    console.log("Got out of init");
@@ -131,6 +138,9 @@
 
 		    socket.onmessage = function(event) {
 		        // Process the message received
+		    	var notification = new Notification('Someone created a new Schedule!', {
+		  	      body: "Hey " + event.data + " just saved a new schedule. Search them up to see the schedule in more detail.",
+		  	    });
 		    }
 
 		    socket.onclose = function(event) {
@@ -145,12 +155,12 @@
 		
 		
 	</head>
-	<body class="is-preload" onload="getEmail()">
+	<body class="is-preload" onload="getEmail(); connectToServer()">
 		
 		<nav id="top">
 			<ul>
 				<a href="index.jsp">Home</a>
-				<a href="saved.jsp">Saved Schedules</a>
+				<a id="seeSaved" href="">Saved Schedules</a>
 			</ul>
 		</nav>
 		

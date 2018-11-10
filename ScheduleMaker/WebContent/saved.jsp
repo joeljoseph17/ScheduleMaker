@@ -12,24 +12,21 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
 
 		<style>
-			#schedule {
+			.schedule {
 			    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 			    border-collapse: collapse;
 			    width: 40%;
 			    margin: 20px;
 			}
 			
-			#schedule td, #schedule th {
+			.schedule td, .schedule th {
 			    border: 1px solid #ddd;
 			    padding: 8px;
 			}
 			
-			#schedule tr:nth-child(even){background-color: #f2f2f2;}
-			
-			#schedule tr:hover {background-color: #ddd;}
 			
 			
-			#schedule th {
+			.schedule th {
 			    padding-top: 12px;
 			    padding-bottom: 12px;
 			    text-align: left;
@@ -79,7 +76,7 @@
 			          }).then(function(){
 			              var auth2 = gapi.auth2.getAuthInstance(); 
 			           	  var googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-			        	  var profile = googleUser.getBasicProfile();
+			        	  var profile = google.getBasicProfile();
 			        	  email = profile.getEmail();
 			        	  console.log(email);
 			          });
@@ -93,7 +90,41 @@
 				console.log("that email was from getEmail");
 			}
 		</script>
-		<script type="text/javascript" src="websocket.js"></script>
+		<script>
+			var socket;
+			function connectToServer() {
+				// If current session does not have email, then user not logged in. 
+				// Do not create Websocket connection to server
+				if (email == null || email == "") {
+					return;
+				}
+				
+				console.log("Entering Web Socket Connection");
+			    socket = new WebSocket("ws://localhost:8080/ScheduleMaker/broadcast");
+			    console.log("Got out of init");
+			    console.log("Registering session client email: " + email);
+			    socket.onopen = function(event) {
+			        // When the connection open, send a message to server identifying the email of current client 
+			        socket.send("email:"+email);
+			        console.log("Session Opened!")
+			    }
+	
+			    socket.onmessage = function(event) {
+			        // Process the message received
+			    	var notification = new Notification('Someone created a new Schedule!', {
+			  	      body: "Hey " + event.data + " just saved a new schedule. Search them up to see the schedule in more detail.",
+			  	    });
+			    }
+	
+			    socket.onclose = function(event) {
+	
+			    }
+	
+			    socket.onerror = function(event) {
+	
+			    }
+			}
+		</script>	
 	</head>
 	<body class="is-preload" onload="getEmail()">
 		<%@ page import="com.google.gson.Gson" %>
@@ -104,14 +135,9 @@
 	<%@ page import="com.google.gson.stream.JsonReader" %>
 				<%
 String param = request.getAttribute("schedules").toString();
-String userEmail = request.getAttribute("user").toString();
-System.out.println(userEmail);
-if(userEmail.contains("%40")){
-	String[] fixedEmail = userEmail.split("%40");
-	userEmail=fixedEmail[0]+"@"+fixedEmail[1];
-	System.out.println(userEmail);
-}
-//System.out.println(param);
+param = param.replaceAll("FILLER", "\'");
+param=param.substring(1, param.length() - 1);
+System.out.println(param);
 System.out.println("made it to the jsp comparison page");
 Gson gson = new Gson();
 JsonReader jr = new JsonReader(new StringReader(param)); 
@@ -163,7 +189,7 @@ System.out.println(body);
 										</tr>
 								<%
 											for(int j=0; j<thisSchedule.size(); j++){
-												String thisThing = thisSchedule.get(j).getAsString();
+												String thisThing = thisSchedule.get(j).toString();
 												JsonReader reader = new JsonReader(new StringReader(thisThing)); 
 												reader.setLenient(true); 
 												JsonObject courseChoice = gson.fromJson(reader, JsonObject.class);
