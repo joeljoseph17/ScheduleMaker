@@ -93,6 +93,7 @@
 				console.log("that email was from getEmail");
 			}
 		</script>
+		<script type="text/javascript" src="websocket.js"></script>
 	</head>
 	<body class="is-preload" onload="getEmail()">
 		<%@ page import="com.google.gson.Gson" %>

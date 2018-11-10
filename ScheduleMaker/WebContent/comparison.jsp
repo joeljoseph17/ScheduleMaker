@@ -75,6 +75,7 @@
 				console.log("that email was from getEmail");
 			}
 		</script>
+		<script type="text/javascript" src="websocket.js"></script>
 		<style>
 			.schedule {
 			    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
