@@ -102,7 +102,10 @@ public class Firebase {
 					else
 						onDay = mapDays(days);
 					
-					sessions.add(new Session(id, title,instructor, sessionType, section, start, end, onDay,location));
+					boolean isTimeTBA = false;
+					if (start.equals("TBA") || end.equals("TBA"))
+						isTimeTBA = true;
+					sessions.add(new Session(id, title,instructor, sessionType, section, start, end, onDay,location, isTimeTBA));
 				}
 			}
 
@@ -228,7 +231,10 @@ public class Firebase {
 					String title = docSnap.getString("Course Name");
 					String id = docSnap.getId();
 
-					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location));
+					boolean isTimeTBA = false;
+					if (start.equals("TBA") || end.equals("TBA"))
+						isTimeTBA = true;
+					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location, isTimeTBA));
 				}
 			}
 
@@ -285,7 +291,10 @@ public class Firebase {
 					String title = docSnap.getString("Course Name");
 					String id = docSnap.getId();
 
-					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location));
+					boolean isTimeTBA = false;
+					if (start.equals("TBA") || end.equals("TBA"))
+						isTimeTBA = true;
+					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location, isTimeTBA));
 				}
 			}
 
@@ -348,7 +357,7 @@ public class Firebase {
 				onDay[0] = true;
 			else if(day.equals("tue") || day.equals("tuesday"))
 				onDay[1] = true;
-			else if(day.equals("wed") || day.equals("wednesday"))
+			else if(day.equals(" wed") || day.equals("wednesday"))
 				onDay[2] = true;
 			else if(day.equals("thu") || day.equals("thursday"))
 				onDay[3] = true;
