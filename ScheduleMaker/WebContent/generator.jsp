@@ -112,6 +112,8 @@
 				email = sessionStorage.getItem("email");
 				document.getElementById("seeSaved").href="saved-schedules?email="+email;
 				console.log("that email was from getEmail");
+				document.getElementById("myuser").value=email;
+	        	console.log(document.getElementById("myuser").value);
 			}
 			function doFunction(){
 				
