@@ -139,27 +139,7 @@
 		</script>	
 	</head>
 	<body class="is-preload" onload="getEmail()">
-		<%@ page import="com.google.gson.Gson" %>
-	<%@ page import="java.io.StringReader" %>
-	<%@ page import="com.google.gson.JsonObject" %>
-	<%@ page import="com.google.gson.JsonArray" %>
-	<%@ page import="com.google.gson.JsonElement" %>
-	<%@ page import="com.google.gson.stream.JsonReader" %>
-				<%
-String param = request.getAttribute("schedules").toString();
-param = param.replaceAll("FILLER", "\'");
-param=param.substring(1, param.length() - 1);
-System.out.println(param);
-System.out.println("made it to the jsp comparison page");
-Gson gson = new Gson();
-JsonReader jr = new JsonReader(new StringReader(param)); 
-jr.setLenient(true); 
-JsonArray body = gson.fromJson(jr, JsonArray.class);
-System.out.println(body);
-
-%>
-		
-			<nav id="top">
+				<nav id="top">
 				<ul>
 					<a href="index.jsp">Home</a>
 					<a href="generator.jsp">Create a Schedule</a>
@@ -189,6 +169,28 @@ System.out.println(body);
 							<header class="major">
 								<h2>Saved Schedules</h2>
 								<div id="schedules">
+		<%@ page import="com.google.gson.Gson" %>
+	<%@ page import="java.io.StringReader" %>
+	<%@ page import="com.google.gson.JsonObject" %>
+	<%@ page import="com.google.gson.JsonArray" %>
+	<%@ page import="com.google.gson.JsonElement" %>
+	<%@ page import="com.google.gson.stream.JsonReader" %>
+				<%
+String param = request.getAttribute("schedules").toString();
+param = param.replaceAll("FILLER", "\'");
+if(param.length()>2){
+param=param.substring(1, param.length() - 1);
+System.out.println(param);
+System.out.println("made it to the jsp comparison page");
+Gson gson = new Gson();
+JsonReader jr = new JsonReader(new StringReader(param)); 
+jr.setLenient(true); 
+JsonArray body = gson.fromJson(jr, JsonArray.class);
+System.out.println(body);
+
+%>
+		
+
 									<% 
 								for(int i=0; i<body.size(); i++){
 									JsonArray thisSchedule = body.get(i).getAsJsonArray();
@@ -254,6 +256,16 @@ System.out.println(body);
 									</table>
 									<%
 								}
+}
+else{
+	String message="You must be logged in to save schedules.";
+	if(param.equals("{}")){
+		message= "Save some schedules!";
+	}
+	%>
+	<%= message%>
+	<%
+}
 									%>
 								</div>
 								
