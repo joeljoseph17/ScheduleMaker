@@ -23,6 +23,8 @@ public class WebSocket {
 	public void open(Session session) {
 		sessionVector.add(session);
 		System.out.println("New Session Connected!");
+		// Debug printout
+		printCurrentSessionEmail();
 	}
 	
 	@OnMessage
@@ -48,6 +50,8 @@ public class WebSocket {
 			else {
 				clientSessionMap.put(email, session);
 			}
+			// Debug printout
+			printCurrentSessionEmail();
 		}
 	}
 	
@@ -85,5 +89,13 @@ public class WebSocket {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static void printCurrentSessionEmail() {
+		System.out.println("All Current Session Email:");
+		for (String email : clientSessionMap.keySet()) {
+			System.out.print(email + " ");
+		}
+		System.out.println("");
 	}
 }
