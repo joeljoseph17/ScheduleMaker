@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.io.StringReader;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 import database.Firebase;
 
@@ -34,8 +36,14 @@ public class SavedSchedules extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
+		System.out.println(email);
 		String json= new Gson().toJson(Firebase.getSavedSchedules(email));
-		request.setAttribute("savedSchedules", json);
+		System.out.println(json);
+		if(json==null) {
+			json="";
+		}
+		
+		request.setAttribute("schedules", json);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("saved.jsp");
 		dispatcher.forward(request,  response);
 		//response.setContentType("application/json");

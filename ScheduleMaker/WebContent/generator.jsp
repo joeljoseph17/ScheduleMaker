@@ -109,6 +109,7 @@
 				console.log("getEmail");
 				console.log(sessionStorage.getItem("email"));
 				email = sessionStorage.getItem("email");
+				document.getElementById("seeSaved").href="saved-schedules?email="+email;
 				console.log("that email was from getEmail");
 			}
 		</script>
@@ -118,7 +119,7 @@
 		<nav id="top">
 			<ul>
 				<a href="index.jsp">Home</a>
-				<a href="saved.jsp">Saved Schedules</a>
+				<a id="seeSaved" href="">Saved Schedules</a>
 			</ul>
 		</nav>
 		

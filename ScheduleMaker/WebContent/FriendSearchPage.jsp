@@ -90,6 +90,7 @@
     		var requeststr = "search?";
     		
     		email = sessionStorage.getItem("email");
+    		document.getElementById("seeSaved").href="saved-schedules?email="+email;
     		//var URL = sessionStorage.getItem("URL");	
     		
     		requeststr += "email=" + email;
@@ -123,7 +124,7 @@
 			<ul>
 				<a href="index.jsp">Home</a>
 				<a href="generator.jsp">Create a Schedule</a>
-				<a href="saved.jsp">Saved Schedules</a>
+				<a id="seeSaved" href="">Saved Schedules</a>
 			</ul>
 		</nav>
 		
