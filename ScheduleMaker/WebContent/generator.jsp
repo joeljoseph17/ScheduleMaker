@@ -11,7 +11,7 @@
 		<title>Schedule Generator</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
+		<!--  <meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">-->
 		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -57,7 +57,7 @@
 		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
 		var API_KEY = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3";
 		var email;
-			function onLoad(){
+			/*function onLoad(){
 			      gapi.load('auth2:client', function(){
 			          gapi.auth2.init({
 			        	  client_id: CLIENT_ID
@@ -66,10 +66,13 @@
 			           	  var googleUser = gapi.auth2.getAuthInstance().currentUser.get();
 			        	  var profile = googleUser.getBasicProfile();
 			        	  email = profile.getEmail();
+
 			        	  console.log(email);
+			        	  document.getElementById("myuser").value=email;
+			        	  console.log(document.getElementById("myuser").value);
 			          });
 				  });
-			}
+			}*/
 			function requestCourses(){
 				var courses = [];
 				var c1 = document.getElementById("course1").value;
@@ -102,9 +105,47 @@
 			  	xhttp.open("POST", "query", true);
 			  	xhttp.send(JSON.stringify(courses));
 			}
+			
+			function getEmail(){
+				console.log("getEmail");
+				console.log(sessionStorage.getItem("email"));
+				email = sessionStorage.getItem("email");
+				console.log("that email was from getEmail");
+			}
 		</script>
+		<!-- <script type="text/javascript" src="websocket.js"></script> -->
+		
+		<script>
+
+		var socket;
+		function connectToServer() {
+			console.log("Entering Web Socket Connection");
+		    socket = new WebSocket("ws://localhost:8080/ScheduleMaker/broadcast");
+		    console.log("Got out of init");
+		    console.log("Registering session client email: " + email);
+		    socket.onopen = function(event) {
+		        // When the connection open, send a message to server identifying the email of current client 
+		        socket.send("email:"+email);
+		        console.log("Session Opened!")
+		    }
+
+		    socket.onmessage = function(event) {
+		        // Process the message received
+		    }
+
+		    socket.onclose = function(event) {
+
+		    }
+
+		    socket.onerror = function(event) {
+
+		    }
+		}
+		</script>
+		
+		
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" onload="getEmail()">
 		
 		<nav id="top">
 			<ul>
@@ -124,7 +165,8 @@
 					<div id="main">
 						<h2>Input classes you would like to take:</h2>
 						<div id = "form">
-							<form method="POST" action="query">
+							<form id="classForm" method="POST" action="query">
+								<input type="hidden" id="myuser" name="myuser" value="">
 								<select name="course1" id="course1">
 									<option value="None">None</option>
 									<option value="CSCI-100xg">CSCI 100xg</option>

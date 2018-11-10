@@ -57,19 +57,27 @@ public class Query extends HttpServlet {
 
 			String payload = buffer.toString();
 			System.out.println(payload);
+			System.out.println("That was the payload");
 			String[] portions = payload.split("&");
-
+			String email = "";
 			List<String> courses = new ArrayList<String>();
 			for(String choice: portions) {
+				System.out.println(choice);
 				String courseName = choice.split("=")[1];
+				String fieldName = choice.split("=")[0];
+				if(fieldName=="myuser" || fieldName.equals("myuser")) {
+					email=courseName;
+				}
 				if(courseName!="None") {
 					courses.add(courseName);
 				}
 			}
 
-			
+			//System.out.println(email);
+			System.out.println(courses.toString());
 			String schedule = Scheduler.getSchedules(Firebase.getCourses(courses));
 			request.setAttribute("schedules", schedule);
+			request.setAttribute("user", email);
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("comparison.jsp");
 		dispatcher.forward(request,  response);

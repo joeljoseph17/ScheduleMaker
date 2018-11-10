@@ -57,7 +57,7 @@ function onSignIn(googleUser) {
 			 "email": email,
 			 "user" : {
 				 "friends": [],
-				 "name": name,
+				 "name": [name],
 				 "savedSchedules": []
 			 }
 	 }
@@ -70,6 +70,8 @@ function onSignIn(googleUser) {
 	  	xhttp.send(JSON.stringify(thisUser));
 	  	
 	  	sessionStorage.setItem("email",email);
+	  	document.getElementById("myuser").value=email;
+  	  	console.log(document.getElementById("myuser").value);
 	}
 	
 	
@@ -202,6 +204,10 @@ function doFunction(){
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>
+					<form method="GET" action="saved-schedules">
+						<input type="hidden" id="email" name="email" value="">
+						<button type="submit">Saved Schedules</button>
+					</form>
 					<a href="saved.jsp">Saved Schedules</a>
 				
 				</ul>

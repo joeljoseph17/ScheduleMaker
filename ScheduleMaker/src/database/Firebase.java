@@ -175,7 +175,7 @@ public class Firebase {
 
 		Gson gson = new Gson();
 
-
+		System.out.println(schedule);
 		// asynchronously retrieve the document
 		ApiFuture<WriteResult> arrayUnion = docRef.update("savedSchedules", FieldValue.arrayUnion(gson.toJson(schedule)));
 
@@ -188,7 +188,7 @@ public class Firebase {
 		}
 
 	}
-	public static List<Session> getSavedSchedules(String email) {
+	public static String getSavedSchedules(String email) {
 
 		Firestore db = initFirestore();
 		DocumentReference docRef = db.collection(USERS_DB).document(email);
@@ -207,43 +207,53 @@ public class Firebase {
 		}
 
 		User user;
-		List<Session> savedSchedules = new LinkedList<>();
+		ArrayList<ArrayList<String>> savedSchedules = new ArrayList<>();
 
 		if(docSnap!=null && docSnap.exists()) {
 			user = docSnap.toObject(User.class);
-			for(String courseTitle : user.getSavedSchedules()) {
-				docRef = db.collection(COURSES_DB).document(courseTitle);
-				future = docRef.get();
+			System.out.println(user.getSavedSchedules());
+			for(String schedule : user.getSavedSchedules()) {
+				ArrayList<String> thisSchedule = new ArrayList<String>();
+				String[] courses = schedule.substring(1, schedule.length() -1).split(",");
+				for(String courseTitle: courses) {
+					courseTitle=courseTitle.substring(1, courseTitle.length() - 1);
+					docRef = db.collection(COURSES_DB).document(courseTitle);
+					System.out.println(courseTitle);
+					future = docRef.get();
 				
-				try {
-					docSnap = future.get();
-				} catch (InterruptedException | ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if(docSnap!=null && docSnap.exists()) {
-					String days = docSnap.getString("Class Days");
-					String start = docSnap.getString("Class Time Start");
-					String end = docSnap.getString("Class Time End");
-					String sessionType = docSnap.getString("Class Type");
-					String instructor = docSnap.getString("Instructor");
-					String location = docSnap.getString("Location");
-					String section = docSnap.getString("Section Number");
-					String title = docSnap.getString("Course Name");
-					String id = docSnap.getId();
+					try {
+						docSnap = future.get();
+					} catch (InterruptedException | ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(docSnap!=null && docSnap.exists()) {
+						System.out.println("should be adding things now");
+						String days = docSnap.getString("Class Days");
+						String start = docSnap.getString("Class Time Start");
+						String end = docSnap.getString("Class Time End");
+						String sessionType = docSnap.getString("Class Type");
+						String instructor = docSnap.getString("Instructor");
+						String location = docSnap.getString("Location");
+						String section = docSnap.getString("Section Number");
+						String title = docSnap.getString("Course Name");
+						String id = docSnap.getId();
 
-					boolean isTimeTBA = false;
-					if (start.equals("TBA") || end.equals("TBA"))
-						isTimeTBA = true;
-					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location, isTimeTBA));
+						boolean isTimeTBA = false;
+						if (start.equals("TBA") || end.equals("TBA"))
+							isTimeTBA = true;
+						thisSchedule.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location, isTimeTBA).getJsonString());
+					}
 				}
+				savedSchedules.add(thisSchedule);
 			}
 
 		} else  {
 			//user not found
 		}
-
-		return savedSchedules;
+		Gson gson = new Gson();
+		
+		return gson.toJson(savedSchedules);
 	}
 
 	private static Firestore initFirestore() {
@@ -298,7 +308,7 @@ public class Firebase {
 				onDay[0] = true;
 			else if(day.equals("tue") || day.equals("tuesday"))
 				onDay[1] = true;
-			else if(day.equals(" wed") || day.equals("wednesday"))
+			else if(day.equals("wed") || day.equals("wednesday"))
 				onDay[2] = true;
 			else if(day.equals("thu") || day.equals("thursday"))
 				onDay[3] = true;

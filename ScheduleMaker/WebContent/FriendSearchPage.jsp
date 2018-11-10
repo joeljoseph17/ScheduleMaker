@@ -76,10 +76,11 @@
 			          });
 				  });
 			}
-
+			
 		</script>
 		
 		<script type="text/javascript">
+		var email;
     	document.addEventListener("DOMContentLoaded", function () {
     		//console.log("H");
     		var searchTerm = sessionStorage.getItem("SearchTerms")
@@ -88,7 +89,7 @@
     		
     		var requeststr = "search?";
     		
-    		var email = sessionStorage.getItem("email");
+    		email = sessionStorage.getItem("email");
     		//var URL = sessionStorage.getItem("URL");	
     		
     		requeststr += "email=" + email;
@@ -100,7 +101,8 @@
 	      	xhttp.send();
 	   
 	      	
-	      	console.log("Orders sent: " + requeststr);
+	      	console.log("Orders sent: ");
+	      	console.log(requeststr);
 	      	
 	      	console.log("Outbound");
 	      	
@@ -115,7 +117,7 @@
     </script>
     
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" onload="connectToServer()">
 		
 		<nav id="top">
 			<ul>
@@ -132,9 +134,7 @@
 					<header id="header" class = "alt">
 						<h1>Find Friends</h1>
 					</header>
-
-					<div id="main">
-					
+						<table>
 					<%
 					/*
 						String param = request.getAttribute("users").toString();
@@ -152,11 +152,15 @@
 							String email = gson.fromJson(userChoice.get("email"), String.class);
 							*/
 					%>
+						<tr>
+							<td></td>
+						</tr>
 					<%
 					/*
 						}
 						*/
 					%>
+						</table>
 
 					</div>
 
