@@ -78,6 +78,7 @@ public class WebSocket {
 	
 	// Broadcast some message to all sessions currently communicating to the server
 	public static void broadcastAll(String message) {
+		System.out.println("BROADCASTING!");
 		for (Session session : sessionVector) {
 			try {
 				session.getBasicRemote().sendText(message);
