@@ -6,6 +6,7 @@
 		<title>Home</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+		<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
 
@@ -39,8 +40,57 @@
 		</style>
 	</head>
 	<body class="is-preload">
-
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
+function onSignIn(googleUser) {
+	  var profile = googleUser.getBasicProfile();
+	  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+	  console.log('Name: ' + profile.getName());
+	  console.log('Image URL: ' + profile.getImageUrl());
+	  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+	  var email = profile.getEmail();
+	  var fname = profile.getName().split(" ")[0];
+	  var name = profile.getName();
+	  document.getElementById('status').innerHTML =
+	        'Thanks for logging in, ' + fname + '!';
+	 var thisUser = {
+			 "email": email,
+			 "user" : {
+				 "friends": [],
+				 "name": name,
+				 "savedSchedules": []
+			 }
+	 }
+	 var xhttp = new XMLHttpRequest();
+	  	xhttp.onreadystatechange = function(){
+	  		console.log("added user");
+	  		console.log(xhttp.responseText);
+	  	};
+	  	xhttp.open("POST", "register", true);
+	  	xhttp.send(JSON.stringify(thisUser));
+	  	
+	  	sessionStorage.setItem("email",email);
+	}
+	
+	
+	
+
+	
+function doFunction(){
+	
+	//Pack Request 
+	var nameValue = document.getElementById("uniqueID").value;
+	console.log("this is " + nameValue);
+	sessionStorage.setItem("SearchTerms",nameValue);
+	
+	//Send out to be triaged at search
+	window.location.href = "FriendSearchPage.jsp";
+	
+  	
+}
+	
+	
+	/*
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -106,13 +156,54 @@
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
     });
-  }
+  }*/
 </script>
+
+
+<script type="text/javascript">
+    	document.addEventListener("DOMContentLoaded", function () {
+    		//console.log("H");
+    		var searchTerm = sessionStorage.getItem("SearchTerms")
+    		console.log("search Term Recieved by Triage @" + searchTerm);
+    		
+    		
+    		var requeststr = "search?";
+    		
+    		var email = sessionStorage.getItem("Email");
+    		var URL = sessionStorage.getItem("URL");	
+    		
+    		requeststr += "email=" + email;
+          	requeststr += "&query=" + searchTerm; 
+    		
+    		
+		    var xhttp = new XMLHttpRequest();
+	      	xhttp.open("GET", requeststr, true);
+	      	xhttp.send();
+	   
+	      	
+	      	console.log("Orders sent: " + requeststr);
+	      	
+	      	console.log("Outbound");
+	      	
+	      	
+	      	//var temp = document.getElementById("hello").innerHTML;
+	      	
+	      	
+    	})
+    	
+    	
+    	
+    </script>
+    	<form style="width:300px; margin-top: 40px; margin-left: 500px" class = "norm">
+	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" style = "border=solid; width=200;">
+	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    			</form>
 
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>
 					<a href="saved.jsp">Saved Schedules</a>
+				
 				</ul>
 			</nav>
 		<!-- Wrapper -->
@@ -199,8 +290,7 @@
 								<footer class="major">
 									<ul class="actions special">
 										<li>
-											<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-											</fb:login-button>
+											<div class="g-signin2" data-onsuccess="onSignIn" data-scope="https://www.googleapis.com/auth/calendar"></div>
 										</li>
 									</ul>
 									<div id="status">

@@ -2,19 +2,15 @@ package services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Type;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
 import api.Scheduler;
 import database.Firebase;
@@ -61,23 +57,26 @@ public class Query extends HttpServlet {
 
 			String payload = buffer.toString();
 			System.out.println(payload);
-			JsonReader jr = new JsonReader(new StringReader(payload.trim())); 
-			jr.setLenient(true); 
+			String[] portions = payload.split("&");
 
-			Type listType = new TypeToken<List<String>>() {}.getType();
-			List<String> courses = new Gson().fromJson(jr, listType);
+			List<String> courses = new ArrayList<String>();
+			for(String choice: portions) {
+				String courseName = choice.split("=")[1];
+				if(courseName!="None") {
+					courses.add(courseName);
+				}
+			}
 
 			
 			String schedule = Scheduler.getSchedules(Firebase.getCourses(courses));
-
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(schedule);
+			request.setAttribute("schedules", schedule);
 		}
-		else {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("comparison.jsp");
+		dispatcher.forward(request,  response);
+		/*else {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
-		}
+		}*/
 	}
 
 }
