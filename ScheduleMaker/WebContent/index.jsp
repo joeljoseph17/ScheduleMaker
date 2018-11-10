@@ -72,12 +72,19 @@ function connectToServer() {
 
 function onSignIn(googleUser) {
 	console.log("GETTING PERMISSS");
-	Notification.requestPermission(function (permission) {
-		  // If the user accepts, let's create a notification
-		    if (permission === "granted") {
-		      console.log("Permission to receive notifications has been granted");
-		    }
-		  });
+	
+    if(!window.Notification){
+        alert("Notification not supported!");
+    }else{
+        Notification.requestPermission().then(function(permission) {
+            console.log(permission);
+            if(permission === 'denied'){
+                alert('You Have Denied Notification!');
+            }else if(permission === 'granted'){
+                alert('You Have Granted notification.');
+            }
+        })
+    }
 
 	
 	  var profile = googleUser.getBasicProfile();
