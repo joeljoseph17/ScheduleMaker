@@ -215,7 +215,7 @@ public class Firebase {
 		} else  {
 			//user not found
 		}
-
+		System.out.println(savedSchedules);
 		return savedSchedules;
 	}
 

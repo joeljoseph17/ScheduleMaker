@@ -57,7 +57,7 @@ function onSignIn(googleUser) {
 			 "email": email,
 			 "user" : {
 				 "friends": [],
-				 "name": name,
+				 "name": [name],
 				 "savedSchedules": []
 			 }
 	 }
