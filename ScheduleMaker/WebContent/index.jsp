@@ -206,41 +206,6 @@ function doFunction(){
 </script>
 
 
-<script type="text/javascript">
-    	document.addEventListener("DOMContentLoaded", function () {
-    		//console.log("H");
-    		var searchTerm = sessionStorage.getItem("SearchTerms")
-    		console.log("search Term Recieved by Triage @" + searchTerm);
-    		
-    		
-    		var requeststr = "search?";
-    		
-    		var email = sessionStorage.getItem("Email");
-    		var URL = sessionStorage.getItem("URL");	
-    		
-    		requeststr += "email=" + email;
-          	requeststr += "&query=" + searchTerm; 
-    		
-    		
-		    var xhttp = new XMLHttpRequest();
-	      	xhttp.open("GET", requeststr, true);
-	      	xhttp.send();
-	   
-	      	
-	      	console.log("Orders sent: " + requeststr);
-	      	
-	      	console.log("Outbound");
-	      	
-	      	
-	      	//var temp = document.getElementById("hello").innerHTML;
-	      	
-	      	
-    	})
-    	
-    	
-    	
-    </script>
-
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>

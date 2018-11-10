@@ -80,6 +80,27 @@
 		</script>
 		
 		<script type="text/javascript">
+		
+		 var xhttp = new XMLHttpRequest();
+		 
+    	xhttp.onreadystatechange = function() {
+    		console.log("Hit");
+        if (this.readyState == 4 && this.status == 200) {
+        	
+        	var obj = JSON.parse(xhttp.responseText);
+        	
+        	if(obj===null){
+        		console.log("Empty");
+        	}
+        	else {
+        		console.log("NORCOM");
+        		console.log(obj.name);
+        	}
+
+        	
+        	
+        	
+       }
 		var email;
     	document.addEventListener("DOMContentLoaded", function () {
     		//console.log("H");
@@ -97,7 +118,7 @@
           	requeststr += "&query=" + searchTerm; 
     		
     		
-		    var xhttp = new XMLHttpRequest();
+		   
 	      	xhttp.open("GET", requeststr, true);
 	      	xhttp.send();
 	   
@@ -111,32 +132,11 @@
 	      	//var temp = document.getElementById("hello").innerHTML;
 	      	
 	      	
-    	})
+    	});
     	
     	
-    	xhttp.onreadystatechange = function() {
-    		console.log("Hit");
-        if (this.readyState == 4 && this.status == 200) {
-        	
-        	var obj = JSON.parse(xhttp.responseText);
-        	
-        	if(obj===null){
-        		console.log("Empty");
-        	}
-        	else {
-        		console.log(obj.name);
-        	}
-         
-        	
-        	
-        	
-        	
-   			
-        	
-        	
-        	
-       }
-    };
+
+    }
     	
     	
     </script>
