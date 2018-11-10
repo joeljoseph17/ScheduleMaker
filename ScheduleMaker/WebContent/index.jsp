@@ -43,6 +43,20 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
 function onSignIn(googleUser) {
+	
+	if(!window.Notification){
+        alert("Notification not supported!");
+    }else{
+        Notification.requestPermission().then(function(permission) {
+            console.log(permission);
+            if(permission === 'denied'){
+                alert('You Have Denied Notification!');
+            }else if(permission === 'granted'){
+                alert('You Have Granted notification.');
+            }
+        })
+    }
+	
 	  var profile = googleUser.getBasicProfile();
 	  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
 	  console.log('Name: ' + profile.getName());
