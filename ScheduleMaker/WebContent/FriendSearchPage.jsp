@@ -113,6 +113,30 @@
     	})
     	
     	
+    	xhttp.onreadystatechange = function() {
+    		console.log("Hit");
+        if (this.readyState == 4 && this.status == 200) {
+        	
+        	var obj = JSON.parse(xhttp.responseText);
+        	
+        	if(obj===null){
+        		console.log("Empty");
+        	}
+        	else {
+        		console.log(obj.name);
+        	}
+         
+        	
+        	
+        	
+        	
+   			
+        	
+        	
+        	
+       }
+    };
+    	
     	
     </script>
     
