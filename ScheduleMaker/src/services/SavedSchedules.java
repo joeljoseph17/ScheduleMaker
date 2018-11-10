@@ -1,6 +1,8 @@
 package services;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,10 +35,12 @@ public class SavedSchedules extends HttpServlet {
 		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
 		String json= new Gson().toJson(Firebase.getSavedSchedules(email));
-		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
+		request.setAttribute("savedSchedules", json);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("saved.jsp");
+		dispatcher.forward(request,  response);
+		//response.setContentType("application/json");
+		//response.setCharacterEncoding("UTF-8");
+		//response.getWriter().write(json);
 		}
 
 	/**

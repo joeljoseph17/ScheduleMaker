@@ -6,7 +6,7 @@
 		<title>Home</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-		<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
+		<!--  <meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com"> -->
 		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
@@ -67,6 +67,13 @@
 					window.alert("only logged in users can save schedules!");
 				}
 			}
+			
+			function getEmail(){
+				console.log("getEmail");
+				console.log(sessionStorage.getItem("email"));
+				email = sessionStorage.getItem("email");
+				console.log("that email was from getEmail");
+			}
 		</script>
 		<style>
 			.schedule {
@@ -123,7 +130,7 @@
 			}
 		</style>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" onload="getEmail()">
 	<%@ page import="com.google.gson.Gson" %>
 	<%@ page import="java.io.StringReader" %>
 	<%@ page import="com.google.gson.JsonObject" %>

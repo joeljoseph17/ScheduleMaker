@@ -6,7 +6,7 @@
 		<title>Home</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-				<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
+				<!--  <meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">-->
 		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
@@ -72,7 +72,7 @@
 		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
 		var API_KEY = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3";
 		var email;
-			function onLoad(){
+			/*function onLoad(){
 			      gapi.load('auth2:client', function(){
 			          gapi.auth2.init({
 			        	  client_id: CLIENT_ID
@@ -82,19 +82,43 @@
 			        	  var profile = googleUser.getBasicProfile();
 			        	  email = profile.getEmail();
 			        	  console.log(email);
-						  var xhttp = new XMLHttpRequest();
-						  xhttp.onreadystatechange = function(){
-						  	console.log("got schedules");
-							console.log(xhttp.responseText);
-						  };
-						  xhttp.open("GET", "saved-schedules?email="+email, true);
-						  xhttp.send();
 			          });
 				  });
+			}*/
+
+			function getEmail(){
+				console.log("getEmail");
+				console.log(sessionStorage.getItem("email"));
+				email = sessionStorage.getItem("email");
+				console.log("that email was from getEmail");
 			}
 		</script>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" onload="getEmail()">
+		<%@ page import="com.google.gson.Gson" %>
+	<%@ page import="java.io.StringReader" %>
+	<%@ page import="com.google.gson.JsonObject" %>
+	<%@ page import="com.google.gson.JsonArray" %>
+	<%@ page import="com.google.gson.JsonElement" %>
+	<%@ page import="com.google.gson.stream.JsonReader" %>
+				<%
+String param = request.getAttribute("schedules").toString();
+String userEmail = request.getAttribute("user").toString();
+System.out.println(userEmail);
+if(userEmail.contains("%40")){
+	String[] fixedEmail = userEmail.split("%40");
+	userEmail=fixedEmail[0]+"@"+fixedEmail[1];
+	System.out.println(userEmail);
+}
+//System.out.println(param);
+System.out.println("made it to the jsp comparison page");
+Gson gson = new Gson();
+JsonReader jr = new JsonReader(new StringReader(param)); 
+jr.setLenient(true); 
+JsonArray body = gson.fromJson(jr, JsonArray.class);
+System.out.println(body);
+
+%>
 		
 			<nav id="top">
 				<ul>
@@ -120,45 +144,72 @@
 							<header class="major">
 								<h2>Saved Schedules</h2>
 								<div id="schedules">
-									<table id="schedule">
+									<% 
+								for(int i=0; i<body.size(); i++){
+									JsonArray thisSchedule = body.get(i).getAsJsonArray();
+									String whichSchedule="schedule"+i;
+									String hiddenId = "hidden"+i;
+								
+								%>
+								<p style="display:none" id=<%= hiddenId %>><%= thisSchedule.toString() %></p>
+									<table class="schedule" onClick="saveSchedule(event)" id=<%=whichSchedule %>>
 										<tr>
-											<th>Course Number</th>
+											<th>Course Name</th>
 											<th>Date(s)</th>
 											<th>Time</th>
+											<th>Instructor</th>
 											<th>Location</th>
 										</tr>
+								<%
+											for(int j=0; j<thisSchedule.size(); j++){
+												String thisThing = thisSchedule.get(j).getAsString();
+												JsonReader reader = new JsonReader(new StringReader(thisThing)); 
+												reader.setLenient(true); 
+												JsonObject courseChoice = gson.fromJson(reader, JsonObject.class);
+												String name = gson.fromJson(courseChoice.get("courseName"), String.class)+" "+gson.fromJson(courseChoice.get("sessionType"), String.class);
+												String date = "";
+												boolean[] days = gson.fromJson(courseChoice.get("onDay"), boolean[].class);
+												if(days[0]){
+													date=date+"M";
+												}
+												if(days[1]){
+													date = date+"T";
+												}
+												if(days[2]){
+													date=date+"W";
+												}
+												if(days[3]){
+													date=date+"Th";
+												}
+												if(days[4]){
+													date=date+"F";
+												}
+												
+												
+												
+												String time = gson.fromJson(courseChoice.get("startTime"), String.class)+" - "+gson.fromJson(courseChoice.get("endTime"), String.class);
+												String location = gson.fromJson(courseChoice.get("location"), String.class);
+												if(location.length()<2){
+													location="TBA";
+												}
+												String instructor = gson.fromJson(courseChoice.get("instructor"), String.class);
+												if(instructor.equals("No Information")){
+													instructor = "TBA";
+												}
+										%>
 										<tr>
-											<td>Course1</td>
-											<td>Date1</td>
-											<td>Time1</td>
-											<td>Location1</td>
+											<td><%= name %></td>
+											<td><%= date %></td>
+											<td><%= time %></td>
+											<td><%= instructor %></td>
+											<td><%= location %></td>
 										</tr>
-										<tr>
-											<td>Course2</td>
-											<td>Date2</td>
-											<td>Time2</td>
-											<td>Location2</td>
-										</tr>
-										<tr>
-											<td>Course3</td>
-											<td>Date3</td>
-											<td>Time3</td>
-											<td>Location3</td>
-										</tr>
-										<tr>
-											<td>Course4</td>
-											<td>Date4</td>
-											<td>Time4</td>
-											<td>Location4</td>
-										</tr>
-										<tr>
-											<td>Course5</td>
-											<td>Date5</td>
-											<td>Time5</td>
-											<td>Location5</td>
-										</tr>
+										<%} %>
 									
 									</table>
+									<%
+								}
+									%>
 								</div>
 								
 								
