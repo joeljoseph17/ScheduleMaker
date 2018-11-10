@@ -246,66 +246,6 @@ public class Firebase {
 		return savedSchedules;
 	}
 
-	public static List<String> getFriends(String email) {
-
-		Firestore db = initFirestore();
-		DocumentReference docRef = db.collection(USERS_DB).document(email);
-		//check what happens if we give a bad email
-
-		// asynchronously retrieve the document
-		ApiFuture<DocumentSnapshot> future = docRef.get();
-		// ...
-		// future.get() blocks on response
-		DocumentSnapshot docSnap = null;
-		try {
-			docSnap = future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		User user;
-		List<Session> savedSchedules = new LinkedList<>();
-
-		if(docSnap!=null && docSnap.exists()) {
-			user = docSnap.toObject(User.class);
-			for(String courseTitle : user.getSavedSchedules()) {
-				System.out.println(courseTitle);
-				docRef = db.collection(COURSES_DB).document(courseTitle);
-				future = docRef.get();
-				try {
-					docSnap = future.get();
-				} catch (InterruptedException | ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if(docSnap!=null && docSnap.exists()) {
-					//					System.out.println(docSnap.get("savedSchedules").toString());
-					//					docSnap.getData().forEach((key, value) -> System.out.println(key + ":" + value.toString()));
-					String days = docSnap.getString("Class Days");
-					String start = docSnap.getString("Class Time Start");
-					String end = docSnap.getString("Class Time End");
-					String sessionType = docSnap.getString("Class Type");
-					String instructor = docSnap.getString("Instructor");
-					String location = docSnap.getString("Location");
-					String section = docSnap.getString("Section Number");
-					String title = docSnap.getString("Course Name");
-					String id = docSnap.getId();
-
-					boolean isTimeTBA = false;
-					if (start.equals("TBA") || end.equals("TBA"))
-						isTimeTBA = true;
-					savedSchedules.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location, isTimeTBA));
-				}
-			}
-
-		} else  {
-			//user not found
-		}
-
-		return null;
-	}
-
 	private static Firestore initFirestore() {
 		Firestore db = null;
 		List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
