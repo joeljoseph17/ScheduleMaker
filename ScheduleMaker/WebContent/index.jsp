@@ -22,6 +22,8 @@
 				color: black;
 				height: 60px;
 				font-size:2em;
+								display: flex;
+				flex-direction: column;
 			}
 			a:hover{
 				cursor: pointer;
@@ -37,11 +39,39 @@
 				margin-left: auto;
 				margin-right: auto;
 			}
+			#seeSaved{
+				margin: 15px;
+				padding: 15px;
+			}
+			#seeSaved:hover{
+				cursor: pointer;
+				color: black;
+			}
+			#searchbar{
+				width:30%; 
+				margin-top: 40px; 
+				margin-left: 500px;
+				display: flex;
+				flex-direction: column;
+				justify-content:center;
+				align-items: center;
+				position: relative;
+				bottom:120%;
+			}
+			#searchForm {
+    			margin: 0 0 2em 0;
+    			width: 20%;
+    			display: flex;
+			}
+			button{
+				height:44px;
+			}
 		</style>
 	</head>
 	<body class="is-preload">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
+var email;
 function onSignIn(googleUser) {
 	
 	if(!window.Notification){
@@ -62,7 +92,7 @@ function onSignIn(googleUser) {
 	  console.log('Name: ' + profile.getName());
 	  console.log('Image URL: ' + profile.getImageUrl());
 	  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-	  var email = profile.getEmail();
+	  email = profile.getEmail();
 	  var fname = profile.getName().split(" ")[0];
 	  var name = profile.getName();
 	  document.getElementById('status').innerHTML =
@@ -84,8 +114,8 @@ function onSignIn(googleUser) {
 	  	xhttp.send(JSON.stringify(thisUser));
 	  	
 	  	sessionStorage.setItem("email",email);
-	  	document.getElementById("myuser").value=email;
-  	  	console.log(document.getElementById("myuser").value);
+	  	document.getElementById("seeSaved").href="saved-schedules?email="+email;
+  	  	console.log(document.getElementById("seeSaved").href);
 	}
 	
 	
@@ -255,17 +285,21 @@ function doFunction(){
 	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
 	    			</form>
 
+
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>
-					<form method="GET" action="saved-schedules">
-						<input type="hidden" id="email" name="email" value="">
-						<button type="submit">Saved Schedules</button>
-					</form>
-					<a href="saved.jsp">Saved Schedules</a>
+					<a id="seeSaved" href="">Saved Schedules</a>
 				
 				</ul>
+					<div id="searchbar">
+						<form id="searchForm">
+	      					<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 			<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    				</form>
+	    			</div>
 			</nav>
+
 		<!-- Wrapper -->
 			<div id="wrapper">
 				

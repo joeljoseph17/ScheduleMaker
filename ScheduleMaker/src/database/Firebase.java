@@ -197,7 +197,8 @@ public static void register(String email,User user) {
 
 	}
 	public static String getSavedSchedules(String email) {
-
+		System.out.println(email);
+		Gson gson = new Gson();
 		Firestore db = initFirestore();
 		DocumentReference docRef = db.collection(USERS_DB).document(email);
 		//check what happens if we give a bad email
@@ -236,7 +237,6 @@ public static void register(String email,User user) {
 						e.printStackTrace();
 					}
 					if(docSnap!=null && docSnap.exists()) {
-						System.out.println("should be adding things now");
 						String days = docSnap.getString("Class Days");
 						String start = docSnap.getString("Class Time Start");
 						String end = docSnap.getString("Class Time End");
@@ -250,7 +250,12 @@ public static void register(String email,User user) {
 						boolean isTimeTBA = false;
 						if (start.equals("TBA") || end.equals("TBA"))
 							isTimeTBA = true;
-						thisSchedule.add(new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location, isTimeTBA).getJsonString());
+						Session thisSession = new Session(id, title,instructor, sessionType, section, start, end, mapDays(days),location, isTimeTBA);
+						String sessionString = thisSession.getJsonString();
+						System.out.println("new session:");
+						System.out.println(sessionString);
+						thisSchedule.add(sessionString);
+						
 					}
 				}
 				savedSchedules.add(thisSchedule);
@@ -259,9 +264,14 @@ public static void register(String email,User user) {
 		} else  {
 			//user not found
 		}
-		Gson gson = new Gson();
-		
-		return gson.toJson(savedSchedules);
+		String returnStr = savedSchedules.toString();
+		String[] sanitize = returnStr.split("'");
+		returnStr=sanitize[0];
+		for(int i=1; i<sanitize.length; i++) {
+			returnStr=returnStr+"FILLER"+sanitize[i];
+		}
+		System.out.println(returnStr);
+		return returnStr;
 	}
 
 	public static List<String> getFriends(String email) {

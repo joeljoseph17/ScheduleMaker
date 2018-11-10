@@ -76,6 +76,18 @@
 			          });
 				  });
 			}
+			function doFunction(){
+				
+				//Pack Request 
+				var nameValue = document.getElementById("uniqueID").value;
+				console.log("this is " + nameValue);
+				sessionStorage.setItem("SearchTerms",nameValue);
+				
+				//Send out to be triaged at search
+				window.location.href = "FriendSearchPage.jsp";
+				
+			  	
+			}
 			
 		</script>
 		
@@ -90,6 +102,7 @@
     		var requeststr = "search?";
     		
     		email = sessionStorage.getItem("email");
+    		document.getElementById("seeSaved").href="saved-schedules?email="+email;
     		//var URL = sessionStorage.getItem("URL");	
     		
     		requeststr += "email=" + email;
@@ -112,6 +125,30 @@
 	      	
     	})
     	
+    	
+    	xhttp.onreadystatechange = function() {
+    		console.log("Hit");
+        if (this.readyState == 4 && this.status == 200) {
+        	
+        	var obj = JSON.parse(xhttp.responseText);
+        	
+        	if(obj===null){
+        		console.log("Empty");
+        	}
+        	else {
+        		console.log(obj.name);
+        	}
+         
+        	
+        	
+        	
+        	
+   			
+        	
+        	
+        	
+       }
+    };
     	
     	
     </script>
@@ -157,8 +194,14 @@
 			<ul>
 				<a href="index.jsp">Home</a>
 				<a href="generator.jsp">Create a Schedule</a>
-				<a href="saved.jsp">Saved Schedules</a>
+				<a id="seeSaved" href="">Saved Schedules</a>
 			</ul>
+			<div id="searchbar">
+				<form id="searchForm">
+	      			<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 	<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    		</form>
+	    	</div>
 		</nav>
 		
 		<!-- Wrapper -->

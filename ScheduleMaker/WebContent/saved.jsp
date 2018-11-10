@@ -12,24 +12,21 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css"/></noscript>
 
 		<style>
-			#schedule {
+			.schedule {
 			    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 			    border-collapse: collapse;
 			    width: 40%;
 			    margin: 20px;
 			}
 			
-			#schedule td, #schedule th {
+			.schedule td, .schedule th {
 			    border: 1px solid #ddd;
 			    padding: 8px;
 			}
 			
-			#schedule tr:nth-child(even){background-color: #f2f2f2;}
-			
-			#schedule tr:hover {background-color: #ddd;}
 			
 			
-			#schedule th {
+			.schedule th {
 			    padding-top: 12px;
 			    padding-bottom: 12px;
 			    text-align: left;
@@ -79,7 +76,7 @@
 			          }).then(function(){
 			              var auth2 = gapi.auth2.getAuthInstance(); 
 			           	  var googleUser = gapi.auth2.getAuthInstance().currentUser.get();
-			        	  var profile = googleUser.getBasicProfile();
+			        	  var profile = google.getBasicProfile();
 			        	  email = profile.getEmail();
 			        	  console.log(email);
 			          });
@@ -91,6 +88,18 @@
 				console.log(sessionStorage.getItem("email"));
 				email = sessionStorage.getItem("email");
 				console.log("that email was from getEmail");
+			}
+			function doFunction(){
+				
+				//Pack Request 
+				var nameValue = document.getElementById("uniqueID").value;
+				console.log("this is " + nameValue);
+				sessionStorage.setItem("SearchTerms",nameValue);
+				
+				//Send out to be triaged at search
+				window.location.href = "FriendSearchPage.jsp";
+				
+			  	
 			}
 		</script>
 		<script>
@@ -138,14 +147,9 @@
 	<%@ page import="com.google.gson.stream.JsonReader" %>
 				<%
 String param = request.getAttribute("schedules").toString();
-String userEmail = request.getAttribute("user").toString();
-System.out.println(userEmail);
-if(userEmail.contains("%40")){
-	String[] fixedEmail = userEmail.split("%40");
-	userEmail=fixedEmail[0]+"@"+fixedEmail[1];
-	System.out.println(userEmail);
-}
-//System.out.println(param);
+param = param.replaceAll("FILLER", "\'");
+param=param.substring(1, param.length() - 1);
+System.out.println(param);
 System.out.println("made it to the jsp comparison page");
 Gson gson = new Gson();
 JsonReader jr = new JsonReader(new StringReader(param)); 
@@ -160,6 +164,12 @@ System.out.println(body);
 					<a href="index.jsp">Home</a>
 					<a href="generator.jsp">Create a Schedule</a>
 				</ul>
+				<div id="searchbar">
+					<form id="searchForm">
+	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    			</form>
+	    		</div>
 			</nav>
 			
 		<!-- Wrapper -->
@@ -197,7 +207,7 @@ System.out.println(body);
 										</tr>
 								<%
 											for(int j=0; j<thisSchedule.size(); j++){
-												String thisThing = thisSchedule.get(j).getAsString();
+												String thisThing = thisSchedule.get(j).toString();
 												JsonReader reader = new JsonReader(new StringReader(thisThing)); 
 												reader.setLenient(true); 
 												JsonObject courseChoice = gson.fromJson(reader, JsonObject.class);

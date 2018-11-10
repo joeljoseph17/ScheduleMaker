@@ -73,6 +73,19 @@
 				console.log(sessionStorage.getItem("email"));
 				email = sessionStorage.getItem("email");
 				console.log("that email was from getEmail");
+				document.getElementById("seeSaved").href="saved-schedules?email="+email;
+			}
+			function doFunction(){
+				
+				//Pack Request 
+				var nameValue = document.getElementById("uniqueID").value;
+				console.log("this is " + nameValue);
+				sessionStorage.setItem("SearchTerms",nameValue);
+				
+				//Send out to be triaged at search
+				window.location.href = "FriendSearchPage.jsp";
+				
+			  	
 			}
 		</script>
 		<script>
@@ -195,8 +208,14 @@ System.out.println(body);
 				<ul>
 					<a href="index.jsp">Home</a>
 					<a href="generator.jsp">Create a Schedule</a>
-					<a href="saved.jsp">Saved Schedules</a>
+					<a id="seeSaved" href="">Saved Schedules</a>
 				</ul>
+				<div id="searchbar">
+					<form id="searchForm">
+	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    			</form>
+	    		</div>
 			</nav>
 			
 		<!-- Wrapper -->
