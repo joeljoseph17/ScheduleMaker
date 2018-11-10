@@ -1,11 +1,8 @@
-/**
- * 
- */
 
 var socket;
 function connectToServer() {
 	console.log("Entering Web Socket Connection");
-    socket = new WebSocket("ws://localhost:8080/ScheduleMaker/ws");
+    socket = new WebSocket("ws://localhost:8080/ScheduleMaker_ScheduleMaker/ws");
     console.log("Got out of init");
     socket.onopen = function(event) {
         // When the connection open, send a message to server identifying the email of current client 
