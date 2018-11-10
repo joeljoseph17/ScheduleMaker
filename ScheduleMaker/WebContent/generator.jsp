@@ -67,6 +67,8 @@
 			        	  var profile = googleUser.getBasicProfile();
 			        	  email = profile.getEmail();
 			        	  console.log(email);
+			        	  document.getElementById("myuser").value=email;
+			        	  console.log(document.getElementById("myuser").value);
 			          });
 				  });
 			}
@@ -124,7 +126,8 @@
 					<div id="main">
 						<h2>Input classes you would like to take:</h2>
 						<div id = "form">
-							<form method="POST" action="query">
+							<form id="classForm" method="POST" action="query">
+								<input type="hidden" id="myuser" name="myuser" value="">
 								<select name="course1" id="course1">
 									<option value="None">None</option>
 									<option value="CSCI-100xg">CSCI 100xg</option>

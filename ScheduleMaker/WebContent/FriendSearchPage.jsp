@@ -132,9 +132,7 @@
 					<header id="header" class = "alt">
 						<h1>Find Friends</h1>
 					</header>
-
-					<div id="main">
-					
+						<table>
 					<%
 					/*
 						String param = request.getAttribute("users").toString();
@@ -152,11 +150,15 @@
 							String email = gson.fromJson(userChoice.get("email"), String.class);
 							*/
 					%>
+						<tr>
+							<td></td>
+						</tr>
 					<%
 					/*
 						}
 						*/
 					%>
+						</table>
 
 					</div>
 
