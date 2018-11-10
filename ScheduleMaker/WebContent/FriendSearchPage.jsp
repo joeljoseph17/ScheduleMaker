@@ -76,10 +76,11 @@
 			          });
 				  });
 			}
-
+			
 		</script>
 		
 		<script type="text/javascript">
+		var email;
     	document.addEventListener("DOMContentLoaded", function () {
     		//console.log("H");
     		var searchTerm = sessionStorage.getItem("SearchTerms")
@@ -88,7 +89,7 @@
     		
     		var requeststr = "search?";
     		
-    		var email = sessionStorage.getItem("email");
+    		email = sessionStorage.getItem("email");
     		//var URL = sessionStorage.getItem("URL");	
     		
     		requeststr += "email=" + email;

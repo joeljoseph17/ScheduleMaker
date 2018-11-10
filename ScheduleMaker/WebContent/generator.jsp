@@ -11,7 +11,7 @@
 		<title>Schedule Generator</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">
+		<!--  <meta name="google-signin-client_id" content="173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com">-->
 		<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -57,7 +57,7 @@
 		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
 		var API_KEY = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3";
 		var email;
-			function onLoad(){
+			/*function onLoad(){
 			      gapi.load('auth2:client', function(){
 			          gapi.auth2.init({
 			        	  client_id: CLIENT_ID
@@ -71,7 +71,7 @@
 			        	  console.log(document.getElementById("myuser").value);
 			          });
 				  });
-			}
+			}*/
 			function requestCourses(){
 				var courses = [];
 				var c1 = document.getElementById("course1").value;
@@ -104,9 +104,16 @@
 			  	xhttp.open("POST", "query", true);
 			  	xhttp.send(JSON.stringify(courses));
 			}
+			
+			function getEmail(){
+				console.log("getEmail");
+				console.log(sessionStorage.getItem("email"));
+				email = sessionStorage.getItem("email");
+				console.log("that email was from getEmail");
+			}
 		</script>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" onload="getEmail()">
 		
 		<nav id="top">
 			<ul>
