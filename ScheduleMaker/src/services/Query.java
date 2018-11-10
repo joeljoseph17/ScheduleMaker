@@ -62,7 +62,7 @@ public class Query extends HttpServlet {
 			String email = "";
 			List<String> courses = new ArrayList<String>();
 			for(String choice: portions) {
-				System.out.println(choice);
+				System.out.println("THIS IS THE CHOICE !!!!!!" + choice);
 				String courseName = choice.split("=")[1];
 				String fieldName = choice.split("=")[0];
 				if(fieldName=="myuser" || fieldName.equals("myuser")) {
