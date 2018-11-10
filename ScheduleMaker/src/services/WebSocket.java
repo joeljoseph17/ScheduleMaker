@@ -53,7 +53,7 @@ public class WebSocket {
 	
 	@OnClose
 	public void close(Session session) {
-		
+		sessionVector.remove(session);
 	}
 	
 	@OnError
@@ -72,6 +72,17 @@ public class WebSocket {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+	
+	// Broadcast some message to all sessions currently communicating to the server
+	public static void broadcastAll(String message) {
+		for (Session session : sessionVector) {
+			try {
+				session.getBasicRemote().sendText(message);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
