@@ -180,7 +180,7 @@ public class Firebase {
 
 		Gson gson = new Gson();
 
-
+		System.out.println(schedule);
 		// asynchronously retrieve the document
 		ApiFuture<WriteResult> arrayUnion = docRef.update("savedSchedules", FieldValue.arrayUnion(gson.toJson(schedule)));
 
