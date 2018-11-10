@@ -41,8 +41,28 @@ public class Firebase {
 	
 	public static void register(String email,User user) {
 		Firestore db = initFirestore();
+		
+		DocumentReference docRef = db.collection(USERS_DB).document(email);
+		//check what happens if we give a bad email
 
-		db.collection(USERS_DB).document(email).set(user);	
+		// asynchronously retrieve the document
+		ApiFuture<DocumentSnapshot> future = docRef.get();
+		// ...
+		// future.get() blocks on response
+		DocumentSnapshot docSnap = null;
+		try {
+			docSnap = future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(!docSnap.exists()) {
+			db.collection(USERS_DB).document(email).set(user);	
+		}
+		else  {
+			System.out.println("User Already Exists");
+		}
 	}
 
 	public static List<Session> getCourses(List<String> courses) {
@@ -99,7 +119,8 @@ public class Firebase {
 
 		return sessions;
 	}
-	public static List<JsonObject> getUsers(String currentUserEmail, String query) {
+	
+	public static List<JsonObject> searchUsers(String currentUserEmail, String query) {
 		Firestore db = initFirestore();
 		List<JsonObject> users = new LinkedList<>();
 		
@@ -109,10 +130,14 @@ public class Firebase {
 
 		ApiFuture<QuerySnapshot> querySnapshot = myQuery.get();
 		
-		System.out.println("one");
+		try {
+			System.out.println(querySnapshot.get().toString());
+		} catch (InterruptedException | ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//Cycle through all the documents that come back
 		try {
-			System.out.println("HI ENtering" );
 			for (DocumentSnapshot docSnap : querySnapshot.get().getDocuments()) {		
 				System.out.println("loop");
 
