@@ -39,30 +39,38 @@ public class Firebase {
 	private final static String USERS_DB = "Users";
 	private final static String COURSES_DB = "CoursesV4";
 	
-	public static void register(String email,User user) {
-		Firestore db = initFirestore();
+public static void register(String email,User user) {
 		
-		DocumentReference docRef = db.collection(USERS_DB).document(email);
-		//check what happens if we give a bad email
+		Map<String, Object> data = new HashMap<>();
+		
 
-		// asynchronously retrieve the document
-		ApiFuture<DocumentSnapshot> future = docRef.get();
-		// ...
-		// future.get() blocks on response
-		DocumentSnapshot docSnap = null;
 		try {
-			docSnap = future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Firestore db = initFirestore();
+
+			System.out.println("Admitting " + email + " to the database");
+			
+			DocumentReference docRef = db.collection("UsersV2").document(email);
+
+        	data.put("name", user.getName());
+        	data.put("savedSchedules", user.getSavedSchedules());
+        	data.put("username", user.getName().get(0));
+        	data.put("email", email);
+        	
+        	ApiFuture<WriteResult> result = docRef.set(data);
+			System.out.println("Update time : " + result.get().getUpdateTime());
+			System.out.println(email + " is in the database" );
 		}
+    	
+		catch(ExecutionException e) {
+			System.out.println("LOL something went wrong");
+			System.out.println(e.getMessage());
+		}
+		catch(InterruptedException e) {
+			System.out.println("LOL something went wrong");
+			System.out.println(e.getMessage());
+		}  		
 		
-		if(!docSnap.exists()) {
-			db.collection(USERS_DB).document(email).set(user);	
-		}
-		else  {
-			System.out.println("User Already Exists");
-		}
+    
 	}
 
 	public static List<Session> getCourses(List<String> courses) {

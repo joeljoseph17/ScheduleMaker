@@ -3,6 +3,7 @@ package services;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -65,6 +66,10 @@ public class Register extends HttpServlet {
 		    
 		    String email = gson.fromJson(body.get("email"), String.class);
 		    User user = gson.fromJson(body.get("user"), User.class);
+		    
+		    
+		    List<String> temp = user.getName();
+		    String username = temp.get(0);
 		    
 		    Firebase.register(email, user);
 		    
