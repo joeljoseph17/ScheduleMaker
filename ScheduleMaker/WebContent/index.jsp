@@ -74,18 +74,7 @@
 var email;
 function onSignIn(googleUser) {
 	
-	if(!window.Notification){
-        alert("Notification not supported!");
-    }else{
-        Notification.requestPermission().then(function(permission) {
-            console.log(permission);
-            if(permission === 'denied'){
-                alert('You Have Denied Notification!');
-            }else if(permission === 'granted'){
-                alert('You Have Granted notification.');
-            }
-        })
-    }
+	Push.Permission.request();
 	
 	  var profile = googleUser.getBasicProfile();
 	  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -204,6 +193,89 @@ function doFunction(){
     });
   }*/
 </script>
+
+
+
+<script type="text/javascript">
+    	document.addEventListener("DOMContentLoaded", function () {
+    		//console.log("H");
+    		var searchTerm = sessionStorage.getItem("SearchTerms")
+    		console.log("search Term Recieved by Triage @" + searchTerm);
+    		
+    		
+    		var requeststr = "search?";
+    		
+    		var email = sessionStorage.getItem("Email");
+    		var URL = sessionStorage.getItem("URL");	
+    		
+    		requeststr += "email=" + email;
+          	requeststr += "&query=" + searchTerm; 
+    		
+    		
+		    var xhttp = new XMLHttpRequest();
+	      	xhttp.open("GET", requeststr, true);
+	      	xhttp.send();
+	   
+	      	
+	      	console.log("Orders sent: " + requeststr);
+	      	
+	      	console.log("Outbound");
+	      	
+	      	
+	      	//var temp = document.getElementById("hello").innerHTML;
+	      	
+	      	
+    	})
+    	
+    	
+    	
+  </script>
+  <script>
+			var socket;
+			function connectToServer() {
+				// If current session does not have email, then user not logged in. 
+				// Do not create Websocket connection to server
+				if (email == null || email == "") {
+					return;
+				}
+
+				console.log("Entering Web Socket Connection");
+				socket = new WebSocket(
+						"ws://localhost:8080/ScheduleMaker/broadcast");
+				console.log("Got out of init");
+				console.log("Registering session client email: " + email);
+				socket.onopen = function(event) {
+					// When the connection open, send a message to server identifying the email of current client 
+					socket.send("email:" + email);
+					console.log("Session Opened!")
+				}
+
+				socket.onmessage = function(event) {
+					console.log(event.data);
+					Push.create('Someone just created a new schedule', {
+					    body: event.data,
+					    timeout: 10000,               // Timeout before notification closes automatically.
+					    vibrate: [100, 100, 100],    // An array of vibration pulses for mobile devices.
+					    onClick: function() {
+					        // Callback for when the notification is clicked. 
+					        console.log(this);
+					    }  
+					});
+				}
+
+				socket.onclose = function(event) {
+
+				}
+
+				socket.onerror = function(event) {
+
+				}
+			}
+</script>	
+    	<form style="width:300px; margin-top: 40px; margin-left: 500px" class = "norm">
+	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" style = "border=solid; width=200;">
+	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    			</form>
 
 
 			<nav id="top">
