@@ -48,7 +48,7 @@
 				color: black;
 			}
 			#searchbar{
-				width:600px; 
+				width:30%; 
 				margin-top: 40px; 
 				margin-left: 500px;
 				display: flex;
@@ -57,12 +57,10 @@
 				align-items: center;
 				position: relative;
 				bottom:120%;
-				left:30%;
-				border: black solid 2px;
 			}
 			#searchForm {
     			margin: 0 0 2em 0;
-    			width: 50%;
+    			width: 20%;
     			display: flex;
 			}
 			button{
@@ -73,6 +71,7 @@
 	<body class="is-preload">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
+var email;
 function onSignIn(googleUser) {
 	
 	if(!window.Notification){
@@ -93,7 +92,7 @@ function onSignIn(googleUser) {
 	  console.log('Name: ' + profile.getName());
 	  console.log('Image URL: ' + profile.getImageUrl());
 	  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-	  var email = profile.getEmail();
+	  email = profile.getEmail();
 	  var fname = profile.getName().split(" ")[0];
 	  var name = profile.getName();
 	  document.getElementById('status').innerHTML =
@@ -248,12 +247,12 @@ function doFunction(){
 					<a id="seeSaved" href="">Saved Schedules</a>
 				
 				</ul>
-												<div id="searchbar">
+					<p id="searchbar">
 					<form id="searchForm">
 	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
 	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
 	    			</form>
-	    			</div>
+	    			</p>
 			</nav>
 
 		<!-- Wrapper -->
