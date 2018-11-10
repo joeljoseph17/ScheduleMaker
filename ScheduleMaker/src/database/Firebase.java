@@ -142,15 +142,17 @@ public class Firebase {
 				System.out.println("loop");
 
 				JsonObject user = new JsonObject();
-				String name = docSnap.getString("name");
-				String email = docSnap.getString("email");
+				String email = docSnap.getId();
+				String name = query;
 				
-				if(!currentUserEmail.equals(email)) { //don't add current user to list of returned user
+				if(currentUserEmail.equals(email)) { //don't add current user to list of returned user
 					continue;
 				}
 				
 				user.addProperty("name", name);
 				user.addProperty("email", email);
+				
+				System.out.println(user.toString());
 				
 				users.add(user);
 			}
