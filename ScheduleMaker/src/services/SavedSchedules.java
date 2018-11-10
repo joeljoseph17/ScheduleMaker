@@ -36,6 +36,7 @@ public class SavedSchedules extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
+		System.out.println("In get saved schedules");
 		System.out.println(email);
 		String json= new Gson().toJson(Firebase.getSavedSchedules(email));
 		System.out.println(json);

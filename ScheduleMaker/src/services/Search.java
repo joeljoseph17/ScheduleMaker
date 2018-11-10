@@ -32,6 +32,9 @@ public class Search extends HttpServlet {
 		// TODO Auto-generated method stub
 				String email = request.getParameter("email");
 				String query = request.getParameter("query");
+				System.out.println("In search ednpoint");
+				System.out.println(email);
+				System.out.println(query);
 				String json = new Gson().toJson(Firebase.searchUsers(email, query));
 
 			    response.setContentType("application/json");
