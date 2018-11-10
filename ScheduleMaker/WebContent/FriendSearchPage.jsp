@@ -100,7 +100,8 @@
 	      	xhttp.send();
 	   
 	      	
-	      	console.log("Orders sent: " + requeststr);
+	      	console.log("Orders sent: ");
+	      	console.log(requeststr);
 	      	
 	      	console.log("Outbound");
 	      	
