@@ -93,8 +93,9 @@
 				  });
 			}
 		</script>
+		<script type="text/javascript" src="websocket.js"></script>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" onload="connectToServer()">
 		
 			<nav id="top">
 				<ul>

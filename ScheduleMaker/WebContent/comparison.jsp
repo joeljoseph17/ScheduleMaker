@@ -37,6 +37,7 @@
 				console.log(thisSchedule);
 			}
 		</script>
+		<script type="text/javascript" src="websocket.js"></script>
 		<style>
 			.schedule {
 			    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -95,7 +96,7 @@
 			}
 		</style>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" onload="connectToServer()">
 	<%@ page import="com.google.gson.Gson" %>
 	<%@ page import="java.io.StringReader" %>
 	<%@ page import="com.google.gson.JsonObject" %>
