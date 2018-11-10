@@ -119,7 +119,8 @@ public class Firebase {
 
 		return sessions;
 	}
-	public static List<JsonObject> getUsers(String currentUserEmail, String query) {
+	
+	public static List<JsonObject> searchUsers(String currentUserEmail, String query) {
 		Firestore db = initFirestore();
 		List<JsonObject> users = new LinkedList<>();
 		
@@ -129,14 +130,12 @@ public class Firebase {
 
 		ApiFuture<QuerySnapshot> querySnapshot = myQuery.get();
 		
-		System.out.println("one");
 		try {
 			System.out.println(querySnapshot.get().toString());
 		} catch (InterruptedException | ExecutionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println("two");
 		//Cycle through all the documents that come back
 		try {
 			for (DocumentSnapshot docSnap : querySnapshot.get().getDocuments()) {		
@@ -147,7 +146,7 @@ public class Firebase {
 				String email = docSnap.getString("email");
 				
 				if(!currentUserEmail.equals(email)) { //don't add current user to list of returned user
-					//continue;
+					continue;
 				}
 				
 				user.addProperty("name", name);

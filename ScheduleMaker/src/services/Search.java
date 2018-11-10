@@ -34,7 +34,7 @@ public class Search extends HttpServlet {
 				String query = request.getParameter("query");
 				String json;
 				System.out.println("QUERY: " + query);
-				json= new Gson().toJson(Firebase.getUsers(email, query));
+				json= new Gson().toJson(Firebase.searchUsers(email, query));
 
 			    response.setContentType("application/json");
 			    response.setCharacterEncoding("UTF-8");
