@@ -48,7 +48,7 @@
 				color: black;
 			}
 			#searchbar{
-				width:600px; 
+				width:30%; 
 				margin-top: 40px; 
 				margin-left: 500px;
 				display: flex;
@@ -57,12 +57,10 @@
 				align-items: center;
 				position: relative;
 				bottom:120%;
-				left:30%;
-				border: black solid 2px;
 			}
 			#searchForm {
     			margin: 0 0 2em 0;
-    			width: 50%;
+    			width: 20%;
     			display: flex;
 			}
 			button{
@@ -73,13 +71,28 @@
 	<body class="is-preload">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
+var email;
 function onSignIn(googleUser) {
+	
+	if(!window.Notification){
+        alert("Notification not supported!");
+    }else{
+        Notification.requestPermission().then(function(permission) {
+            console.log(permission);
+            if(permission === 'denied'){
+                alert('You Have Denied Notification!');
+            }else if(permission === 'granted'){
+                alert('You Have Granted notification.');
+            }
+        })
+    }
+	
 	  var profile = googleUser.getBasicProfile();
 	  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
 	  console.log('Name: ' + profile.getName());
 	  console.log('Image URL: ' + profile.getImageUrl());
 	  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-	  var email = profile.getEmail();
+	  email = profile.getEmail();
 	  var fname = profile.getName().split(" ")[0];
 	  var name = profile.getName();
 	  document.getElementById('status').innerHTML =

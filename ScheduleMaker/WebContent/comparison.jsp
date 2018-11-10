@@ -88,7 +88,41 @@
 			  	
 			}
 		</script>
-		<script type="text/javascript" src="websocket.js"></script>
+		<script>
+			var socket;
+			function connectToServer() {
+				// If current session does not have email, then user not logged in. 
+				// Do not create Websocket connection to server
+				if (email == null || email == "") {
+					return;
+				}
+				
+				console.log("Entering Web Socket Connection");
+			    socket = new WebSocket("ws://localhost:8080/ScheduleMaker/broadcast");
+			    console.log("Got out of init");
+			    console.log("Registering session client email: " + email);
+			    socket.onopen = function(event) {
+			        // When the connection open, send a message to server identifying the email of current client 
+			        socket.send("email:"+email);
+			        console.log("Session Opened!")
+			    }
+	
+			    socket.onmessage = function(event) {
+			        // Process the message received
+			    	var notification = new Notification('Someone created a new Schedule!', {
+			  	      body: "Hey " + event.data + " just saved a new schedule. Search them up to see the schedule in more detail.",
+			  	    });
+			    }
+	
+			    socket.onclose = function(event) {
+	
+			    }
+	
+			    socket.onerror = function(event) {
+	
+			    }
+			}
+		</script>
 		<style>
 			.schedule {
 			    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
