@@ -212,12 +212,12 @@ function doFunction(){
 					<a id="seeSaved" href="">Saved Schedules</a>
 				
 				</ul>
-					<p id="searchbar">
-					<form id="searchForm">
-	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
-	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
-	    			</form>
-	    			</p>
+					<div id="searchbar">
+						<form id="searchForm">
+	      					<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 			<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    				</form>
+	    			</div>
 			</nav>
 
 		<!-- Wrapper -->
