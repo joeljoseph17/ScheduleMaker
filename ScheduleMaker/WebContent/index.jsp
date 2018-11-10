@@ -68,7 +68,28 @@ function onSignIn(googleUser) {
 	  	};
 	  	xhttp.open("POST", "register", true);
 	  	xhttp.send(JSON.stringify(thisUser));
+	  	
+	  	sessionStorage.setItem("email",email);
 	}
+	
+	
+	
+
+	
+function doFunction(){
+	
+	//Pack Request 
+	var nameValue = document.getElementById("uniqueID").value;
+	console.log("this is " + nameValue);
+	sessionStorage.setItem("SearchTerms",nameValue);
+	
+	//Send out to be triaged at search
+	window.location.href = "FriendSearchPage.jsp";
+	
+  	
+}
+	
+	
 	/*
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -138,10 +159,51 @@ function onSignIn(googleUser) {
   }*/
 </script>
 
+
+<script type="text/javascript">
+    	document.addEventListener("DOMContentLoaded", function () {
+    		//console.log("H");
+    		var searchTerm = sessionStorage.getItem("SearchTerms")
+    		console.log("search Term Recieved by Triage @" + searchTerm);
+    		
+    		
+    		var requeststr = "search?";
+    		
+    		var email = sessionStorage.getItem("Email");
+    		var URL = sessionStorage.getItem("URL");	
+    		
+    		requeststr += "email=" + email;
+          	requeststr += "&query=" + searchTerm; 
+    		
+    		
+		    var xhttp = new XMLHttpRequest();
+	      	xhttp.open("GET", requeststr, true);
+	      	xhttp.send();
+	   
+	      	
+	      	console.log("Orders sent: " + requeststr);
+	      	
+	      	console.log("Outbound");
+	      	
+	      	
+	      	//var temp = document.getElementById("hello").innerHTML;
+	      	
+	      	
+    	})
+    	
+    	
+    	
+    </script>
+    	<form style="width:300px; margin-top: 40px; margin-left: 500px" class = "norm">
+	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" style = "border=solid; width=200;">
+	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    			</form>
+
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>
 					<a href="saved.jsp">Saved Schedules</a>
+				
 				</ul>
 			</nav>
 		<!-- Wrapper -->
