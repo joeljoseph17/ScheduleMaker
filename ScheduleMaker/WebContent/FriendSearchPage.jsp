@@ -58,6 +58,11 @@
 				text-align: center;
 				font-size: 2em;
 			}
+			li{
+				background-color:white;
+				color:black;
+				width:400px;
+			}
 		</style>
 		<script>
 		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
@@ -85,14 +90,22 @@
 				
 				//Send out to be triaged at search
 				window.location.href = "FriendSearchPage.jsp";
-				
-			  	
+					
+			}
+			function redirectUser(){
+				var clickedThing = event.target.innerHTML;
+				console.log(clickedThing)
+				var secondHalf = clickedThing.split(":")[1];
+				secondHalf=secondHalf.substr(1);
+				console.log(secondHalf);
+				var replacement="saved-schedules?email="+secondHalf;
+				window.location.replace(replacement);
 			}
 			
 		</script>
 		
 		<script type="text/javascript">
-		
+		console.log("Hello world");
 		 var xhttp = new XMLHttpRequest();
 		 
     	xhttp.onreadystatechange = function() {
@@ -106,13 +119,36 @@
         	}
         	else {
         		console.log("NORCOM");
-        		console.log(obj.name);
+        		console.log(xhttp.responseText);
+        		var response = xhttp.responseText;
+        		response = response.substr(1, response.length-2);
+        		console.log(response);
+        		var users = response.split("}");
+        		console.log(users);
+        		var jsonUsers=[];
+        		for(var i=0; i<users.length; i++){
+        			users[i]=users[i]+"}";
+        			if(users[i].length > 1)
+        				jsonUsers.push(JSON.parse(users[i]));
+        		}
+        		console.log(jsonUsers);
+        		var content="<ul style=\"list-style-type:none\">";
+        		for(var i=0; i<jsonUsers.length; i++){
+        			var othername=jsonUsers[i].name;
+        			var otheremail = jsonUsers[i].email;
+        			content=content+"<li onclick=\"redirectUser()\">";
+        			content=content+othername+": "+otheremail;
+        			content=content+"</li>";
+        		}
+        		content=content+"</ul>";
+        		document.getElementById("results").innerHTML = content;
+        		
         	}
 
         	
         	
-        	
-       }
+        	}
+    	}
 		var email;
     	document.addEventListener("DOMContentLoaded", function () {
     		//console.log("H");
@@ -132,6 +168,7 @@
     		
 		   
 	      	xhttp.open("GET", requeststr, true);
+	      	console.log("about to send");
 	      	xhttp.send();
 	   
 	      	
@@ -148,7 +185,6 @@
     	
     	
 
-    }
     	
     	
     </script>
@@ -217,34 +253,8 @@
 					<header id="header" class = "alt">
 						<h1>Find Friends</h1>
 					</header>
-						<table>
-					<%
-					/*
-						String param = request.getAttribute("users").toString();
-						Gson gson = new Gson();
-						JsonReader jr = new JsonReader(new StringReader(param)); 
-						jr.setLenient(true); 
-						JsonArray body = gson.fromJson(jr, JsonArray.class);
-						System.out.println(body);
-						for(int i = 0; i<body.size(); i++){
-							String thisUser = body.get(i).getAsString();
-							JsonReader reader = new JsonReader(new StringReader(thisUser)); 
-							reader.setLenient(true); 
-							JsonObject userChoice = gson.fromJson(reader, JsonObject.class);
-							String name = gson.fromJson(userChoice.get("name"), String.class);
-							String email = gson.fromJson(userChoice.get("email"), String.class);
-							*/
-					%>
-						<tr>
-							<td></td>
-						</tr>
-					<%
-					/*
-						}
-						*/
-					%>
-						</table>
-
+					<div id="results">
+					
 					</div>
 
 			</div>
