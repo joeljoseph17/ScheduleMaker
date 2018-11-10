@@ -67,7 +67,9 @@ public class WebSocket {
 	
 	// Broadcast some message to the set of sessions specified by a user email list
 	public static void broadcast(ArrayList<String> userEmailList, String message) {
+		System.out.println("CALLING BRAODCAST: message = " + message);
 		for (String email : userEmailList) {
+			
 			// If the user specified by the email is currently holding a session to the server, broadcast
 			if (clientSessionMap.containsKey(email)) {
 				Session session = clientSessionMap.get(email);
@@ -82,6 +84,7 @@ public class WebSocket {
 	
 	// Broadcast some message to all sessions currently communicating to the server
 	public static void broadcastAll(String message) {
+		System.out.println("CALLING BRAODCAST: message = " + message);
 		for (Session session : sessionVector) {
 			try {
 				session.getBasicRemote().sendText(message);

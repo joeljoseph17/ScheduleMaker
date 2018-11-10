@@ -108,10 +108,16 @@
 			    }
 	
 			    socket.onmessage = function(event) {
-			        // Process the message received
-			    	var notification = new Notification('Someone created a new Schedule!', {
-			  	      body: "Hey " + event.data + " just saved a new schedule. Search them up to see the schedule in more detail.",
-			  	    });
+			    	console.log(event.data);
+			    	Push.create('Someone just created a new schedule', {
+					    body: event.data,
+					    timeout: 10000,               // Timeout before notification closes automatically.
+					    vibrate: [100, 100, 100],    // An array of vibration pulses for mobile devices.
+					    onClick: function() {
+					        // Callback for when the notification is clicked. 
+					        console.log(this);
+					    }  
+					});
 			    }
 	
 			    socket.onclose = function(event) {

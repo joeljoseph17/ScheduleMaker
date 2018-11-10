@@ -74,6 +74,9 @@ public class Save extends HttpServlet {
 		    List<String> schedule = gson.fromJson(body.get("schedule"), scheduleType);
 		    
 		    Firebase.saveSchedule(email, schedule);
+		    
+		    // Broadcast messages
+		    WebSocket.broadcastAll("User: " + email + " has updated his schedule!");
 		}
 		else {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
