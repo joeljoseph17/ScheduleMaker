@@ -52,6 +52,26 @@
 				text-align: center;
 				font-size: 2em;
 			}
+			#searchbar{
+				width:100%; 
+     			display: flex;
+				flex-direction: column;
+				justify-content:center;
+				align-items: center;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			#searchForm {
+    			margin: 0 0 2em 0;
+    			width: 30%;
+    			display: flex;
+			}
+			button{
+				height:44px;
+			}
+			#uniqueID{
+				margin-right: 10px;
+			}
 		</style>
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
@@ -184,12 +204,6 @@
 				<a href="index.jsp">Home</a>
 				<a id="seeSaved" href="">Saved Schedules</a>
 			</ul>
-			<div id="searchbar">
-				<form id="searchForm">
-	      			<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
-	     		 	<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
-	    		</form>
-	    	</div>
 		</nav>
 		
 		<!-- Wrapper -->
@@ -199,6 +213,13 @@
 					<header id="header" class = "alt">
 						<h1>Schedule Generator</h1>
 					</header>
+					
+				<div id="searchbar">
+					<form id="searchForm">
+      					<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+     		 			<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+    				</form>
+    			</div>
 
 					<div id="main">
 						<h2>Input classes you would like to take:</h2>

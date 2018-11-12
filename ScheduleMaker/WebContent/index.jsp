@@ -49,22 +49,23 @@
 			}
 			#searchbar{
 				width:100%; 
-				margin-top: 40px; 
-				margin-left: 500px;
-				display: flex;
+     			display: flex;
 				flex-direction: column;
 				justify-content:center;
 				align-items: center;
-				position: relative;
-				bottom:120%;
+				margin-left: auto;
+				margin-right: auto;
 			}
 			#searchForm {
     			margin: 0 0 2em 0;
-    			width: 20%;
+    			width: 30%;
     			display: flex;
 			}
 			button{
 				height:44px;
+			}
+			#uniqueID{
+				margin-right: 10px;
 			}
 		</style>
 	</head>
@@ -208,24 +209,12 @@ function doFunction(){
 </script>	
 
 <body class="is-preload" onload="connectToServer()">
-    	<form style="width:300px; margin-top: 40px; margin-left: 500px" class = "norm">
-	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" style = "border=solid; width=200;">
-	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
-	    			</form>
-
 
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>
 					<a id="seeSaved" href="">Saved Schedules</a>
-				
 				</ul>
-					<div id="searchbar">
-						<form id="searchForm">
-	      					<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
-	     		 			<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
-	    				</form>
-	    			</div>
 			</nav>
 
 		<!-- Wrapper -->
@@ -236,6 +225,12 @@ function doFunction(){
 						<h1>SChedule Maker</h1>
 					</header>
 
+				<div id="searchbar">
+					<form id="searchForm">
+      					<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+     		 			<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+    				</form>
+    			</div>
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>

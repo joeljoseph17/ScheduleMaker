@@ -64,6 +64,26 @@
 				flex-flow: row wrap;
 				justify-content: center;
 			}
+			#searchbar{
+				width:100%; 
+     			display: flex;
+				flex-direction: column;
+				justify-content:center;
+				align-items: center;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			#searchForm {
+    			margin: 0 0 2em 0;
+    			width: 30%;
+    			display: flex;
+			}
+			button{
+				height:44px;
+			}
+			#uniqueID{
+				margin-right: 10px;
+			}
 		</style>
 		<script>
 		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
@@ -171,12 +191,6 @@ System.out.println(body);
 					<a href="index.jsp">Home</a>
 					<a href="generator.jsp">Create a Schedule</a>
 				</ul>
-				<div id="searchbar">
-					<form id="searchForm">
-	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
-	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
-	    			</form>
-	    		</div>
 			</nav>
 			
 		<!-- Wrapper -->
@@ -188,6 +202,12 @@ System.out.println(body);
 					</header>
 
 
+				<div id="searchbar">
+					<form id="searchForm">
+	      				<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
+	     		 		<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
+	    			</form>
+	    		</div>
 				<!-- Main -->
 					<div id="main">
 							
