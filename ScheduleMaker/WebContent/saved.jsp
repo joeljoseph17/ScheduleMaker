@@ -165,25 +165,7 @@
 		</script>	
 	</head>
 	<body class="is-preload" onload="getEmail(); connectToServer()">
-		<%@ page import="com.google.gson.Gson" %>
-	<%@ page import="java.io.StringReader" %>
-	<%@ page import="com.google.gson.JsonObject" %>
-	<%@ page import="com.google.gson.JsonArray" %>
-	<%@ page import="com.google.gson.JsonElement" %>
-	<%@ page import="com.google.gson.stream.JsonReader" %>
-				<%
-String param = request.getAttribute("schedules").toString();
-param = param.replaceAll("FILLER", "\'");
-param=param.substring(1, param.length() - 1);
-System.out.println(param);
-System.out.println("made it to the jsp comparison page");
-Gson gson = new Gson();
-JsonReader jr = new JsonReader(new StringReader(param)); 
-jr.setLenient(true); 
-JsonArray body = gson.fromJson(jr, JsonArray.class);
-System.out.println(body);
 
-%>
 		
 			<nav id="top">
 
