@@ -50,15 +50,28 @@ public static void register(String email, User user) {
 			System.out.println("Admitting " + email + " to the database");
 			
 			DocumentReference docRef = db.collection("UsersV2").document(email);
+			ApiFuture<DocumentSnapshot> future = docRef.get();
+			DocumentSnapshot docSnap = null;
+			try {
+				docSnap = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(!docSnap.exists()) {
+	        	data.put("name", user.getName());
+	        	data.put("savedSchedules", user.getSavedSchedules());
+	        	data.put("username", user.getName().get(0));
+	        	data.put("email", email);
+	        	
+	        	ApiFuture<WriteResult> result = docRef.set(data);
+				System.out.println("Update time : " + result.get().getUpdateTime());
+				System.out.println(email + " is in the database" );
+			}
+			else  {
+				System.out.println("User Already Exists");
+			}
 
-        	data.put("name", user.getName());
-        	data.put("savedSchedules", user.getSavedSchedules());
-        	data.put("username", user.getName().get(0));
-        	data.put("email", email);
-        	
-        	ApiFuture<WriteResult> result = docRef.set(data);
-			System.out.println("Update time : " + result.get().getUpdateTime());
-			System.out.println(email + " is in the database" );
 		}
     	
 		catch(ExecutionException e) {
