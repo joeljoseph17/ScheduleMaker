@@ -36,10 +36,10 @@ import models.User;
 import models.Session;
 
 public class Firebase {
-	private final static String USERS_DB = "Users";
+	private final static String USERS_DB = "UsersV2";
 	private final static String COURSES_DB = "CoursesV4";
 	
-public static void register(String email,User user) {
+public static void register(String email, User user) {
 		
 		Map<String, Object> data = new HashMap<>();
 		
@@ -197,6 +197,7 @@ public static void register(String email,User user) {
 
 	}
 	public static String getSavedSchedules(String email) {
+		System.out.println("In get saved schedules");
 		System.out.println(email);
 		Gson gson = new Gson();
 		Firestore db = initFirestore();
@@ -271,6 +272,7 @@ public static void register(String email,User user) {
 			returnStr=returnStr+"FILLER"+sanitize[i];
 		}
 		System.out.println(returnStr);
+		System.out.println("end of get saved schedules");
 		return returnStr;
 	}
 

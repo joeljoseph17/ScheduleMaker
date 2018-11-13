@@ -114,7 +114,7 @@
 				window.location.href = "FriendSearchPage.jsp";
 					
 			}
-			function redirectUser(){
+			function redirectUser(event){
 				var clickedThing = event.target.innerHTML;
 				console.log(clickedThing)
 				var secondHalf = clickedThing.split(":")[1];
@@ -150,15 +150,19 @@
         		var jsonUsers=[];
         		for(var i=0; i<users.length; i++){
         			users[i]=users[i]+"}";
-        			if(users[i].length > 1)
+        			if(users[i].length > 1){
+        				if(users[i].indexOf(",")==0){
+        					users[i]=users[i].substring(1);
+        				}
         				jsonUsers.push(JSON.parse(users[i]));
+        			}	
         		}
         		console.log(jsonUsers);
         		var content="<ul style=\"list-style-type:none\">";
         		for(var i=0; i<jsonUsers.length; i++){
         			var othername=jsonUsers[i].name;
         			var otheremail = jsonUsers[i].email;
-        			content=content+"<li onclick=\"redirectUser()\">";
+        			content=content+"<li onclick=\"redirectUser(event)\">";
         			content=content+othername+": "+otheremail;
         			content=content+"</li>";
         		}

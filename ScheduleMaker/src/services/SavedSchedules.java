@@ -38,6 +38,11 @@ public class SavedSchedules extends HttpServlet {
 		String email = request.getParameter("email");
 		System.out.println("In get saved schedules");
 		System.out.println(email);
+		if(email==null || email.length()<3) {
+			request.setAttribute("schedules", "[]");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("saved.jsp");
+			dispatcher.forward(request,  response);
+		}
 		String json= new Gson().toJson(Firebase.getSavedSchedules(email));
 		System.out.println(json);
 		if(json==null) {

@@ -213,7 +213,7 @@ function doFunction(){
 			<nav id="top">
 				<ul>
 					<a href="generator.jsp">Create a Schedule</a>
-					<a id="seeSaved" href="">Saved Schedules</a>
+					<a id="seeSaved" href="saved-schedules?email=">Saved Schedules</a>
 				</ul>
 			</nav>
 

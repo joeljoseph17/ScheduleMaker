@@ -46,10 +46,10 @@
 					myClass = myClass.substr(0, endPosition);
 					courses.push(myClass);
 				}
-				if(email.length==0){
+				if(email==null || email.length==0){
 					email=document.getElementById("hiddenEmail").innerHTML;
 				}
-				if(email.length>0){
+				if(email!=null && email.length>0){
 					var body={
 							"email": email,
 							"schedule": courses
