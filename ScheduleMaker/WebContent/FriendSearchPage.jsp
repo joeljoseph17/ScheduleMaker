@@ -83,6 +83,13 @@
 			#uniqueID{
 				margin-right: 10px;
 			}
+			#results{
+				background-color: white;
+				margin-bottom: 400px;
+				width: 40%;
+				margin-left: auto;
+				margin-right: auto;
+			}
 		</style>
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
@@ -270,17 +277,15 @@
 			<div id="wrapper">
 
 				<!-- Header -->
-					<header id="header" class = "alt">
-						<h1>Find Friends</h1>
-					</header>
-					
+					<br>
+					<br>
 					<div id="searchbar">
 						<form id="searchForm">
 			      			<input type="text" placeholder="Search Friends"  id="uniqueID" type="submit" >
 			     		 	<button onclick="doFunction();" type="reset"><i class="fa fa-search"></i></button>
 			    		</form>
 			    	</div>
-			    	
+			    	<h1>Results</h1>
 					<div id="results">
 					
 					</div>
