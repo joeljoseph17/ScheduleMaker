@@ -85,10 +85,22 @@
 			}
 			#results{
 				background-color: white;
-				margin-bottom: 400px;
+				margin-bottom: 500px;
 				width: 40%;
 				margin-left: auto;
 				margin-right: auto;
+				padding: 0;
+				font-size: 20px;
+			}
+			li{
+				list-style-position:inside;
+    			border: 2px solid black;
+    			width: 100%;
+    			border-collapse: collapse;
+			}
+			ul, li{
+				padding: 0;
+				margin: 0;
 			}
 		</style>
 		
