@@ -262,7 +262,7 @@ function doFunction(){
 									<li>
 										<span class="icon major style5 fa-diamond"></span>
 										<h3>Bonus Features</h3>
-										<p>Set time/location preferences, prioritize by professor rating, and see which friends have saved the same classes as you.</p>
+										<p>See which friends have saved the same classes as you.</p>
 									</li>
 								</ul>
 							</section>
@@ -275,9 +275,7 @@ function doFunction(){
 									<div id="additionalFeatures">
 										<ul>
 											<li>Saving your preferred schedules</li>
-											<li>Identifying friends in the same courses</li>
 											<li>Comparing your saved schedules</li>
-											<li>Add preferences to schedule generator</li>
 										</ul>
 									</div>
 								</header>

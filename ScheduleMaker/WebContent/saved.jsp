@@ -84,6 +84,9 @@
 			#uniqueID{
 				margin-right: 10px;
 			}
+			#wrapper{
+				margin-bottom: 200px;
+			}
 		</style>
 		<script>
 		var CLIENT_ID = "173320350877-evj10cjs6durmcoij1vnubs9fkalg0i3.apps.googleusercontent.com";
@@ -303,6 +306,7 @@ else{
 						</section>
 
 					</div>
+					<br>
 					<br>
 					<br>
 					<br>
