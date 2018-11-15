@@ -276,7 +276,6 @@
 									<option value="MATH-226g">MATH-226g</option>
 									<option value="MATH-229">MATH-229</option>
 									<option value="MATH-407">MATH-407</option>
-									<option value="WRIT-150">WRIT-150</option>
 									<option value="WRIT-340">WRIT-340</option>
 								</select>
 								<select name="course2" id="course2">
@@ -326,7 +325,6 @@
 									<option value="MATH-226g">MATH-226g</option>
 									<option value="MATH-229">MATH-229</option>
 									<option value="MATH-407">MATH-407</option>
-									<option value="WRIT-150">WRIT-150</option>
 									<option value="WRIT-340">WRIT-340</option>
 								</select>
 								<select name="course3" id="course3">
@@ -376,7 +374,6 @@
 									<option value="MATH-226g">MATH-226g</option>
 									<option value="MATH-229">MATH-229</option>
 									<option value="MATH-407">MATH-407</option>
-									<option value="WRIT-150">WRIT-150</option>
 									<option value="WRIT-340">WRIT-340</option>
 								</select>
 								<select name="course4" id="course4">
@@ -426,7 +423,6 @@
 									<option value="MATH-226g">MATH-226g</option>
 									<option value="MATH-229">MATH-229</option>
 									<option value="MATH-407">MATH-407</option>
-									<option value="WRIT-150">WRIT-150</option>
 									<option value="WRIT-340">WRIT-340</option>
 								</select>
 								<select name="course5" id="course5">
@@ -476,7 +472,6 @@
 									<option value="MATH-226g">MATH-226g</option>
 									<option value="MATH-229">MATH-229</option>
 									<option value="MATH-407">MATH-407</option>
-									<option value="WRIT-150">WRIT-150</option>
 									<option value="WRIT-130">WRIT-340</option>
 								</select>
 								<button type="submit">Generate Schedules</button>
